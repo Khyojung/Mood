@@ -11,20 +11,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".category.MessageActivity">
+        <activity
+            android:name=".category.MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".category.GraphActivity" />
+        <activity android:name=".category.CommunityActivity"></activity>
+        <activity android:name=".category.DiaryActivity" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".category.GraphActivity" />
-        <activity android:name=".category.CommunityActivity" />
-        <activity android:name=".category.EditActivity"></activity>
+        <activity
+            android:name=".NavigationActivity"
+            android:label="@string/title_activity_navigation"
+            android:theme="@style/Theme.AppCompat.NoActionBar">
+
+        </activity>
+        <activity android:name=".WriteCommunityActivity"></activity>
     </application>
 
 </manifest>

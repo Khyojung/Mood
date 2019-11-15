@@ -4,124 +4,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lemon.piece.dodamdodam.SignUpActivity">
-    <RelativeLayout
+
+    tools:context="com.lemon.piece.dodamdodam.SignUpActivity">'
+    <ImageView
+    android:background="@drawable/background2"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" />
+    <ImageView
+        android:background="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_width="194dp"
+        android:layout_height="40dp"/>
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:id="@+id/input_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="ID"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2">
+            <ImageView
+                android:background="@drawable/id"
+                android:layout_width="50dp"
+                android:layout_height="20dp" />
 
             <EditText
                 android:id="@+id/edit_id"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/input_id"
-            android:id="@+id/input_pw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="PW"/>
 
-            <EditText
-                android:id="@+id/edit_pw"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/input_pw"
-            android:id="@+id/input_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="NAME"/>
+        <ImageView
+            android:background="@drawable/name"
+            android:layout_width="50dp"
+            android:layout_height="20dp" />
 
             <EditText
                 android:id="@+id/edit_name"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/input_name"
-            android:id="@+id/input_age"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="AGE"/>
+        <ImageView
+            android:background="@drawable/pw_text"
+            android:layout_width="70dp"
+            android:layout_height="20dp" />
 
             <EditText
-                android:id="@+id/edit_age"
+                android:password="true"
+                android:id="@+id/edit_pw"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/input_age"
-            android:id="@+id/input_gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_marginTop="8dp"
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="GENDER"/>
 
-            <RadioGroup
-                android:id="@+id/edit_radio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <RadioButton
-                        android:id="@+id/edit_wm"
-                        android:text="여성"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                    <RadioButton
-                        android:id="@+id/edit_m"
-                        android:text="남성"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </LinearLayout>
-
-            </RadioGroup>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_below="@id/input_gender"
-            android:id="@+id/input_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="60dp"
-                android:layout_height="wrap_content"
-                android:text="EMAIL"/>
+        <ImageView
+            android:background="@drawable/pw_again"
+            android:layout_width="100dp"
+            android:layout_height="20dp" />
 
             <EditText
-                android:id="@+id/edit_email"
+                android:password="true"
+                android:id="@+id/edit_pw_again"
                 android:layout_width="120dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <Button
-            android:text="SIGN UP"
-            android:id="@+id/edit_button"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/input_email"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </RelativeLayout>
+                android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:background="@drawable/signup"
+        android:id="@+id/edit_button"
+        android:layout_width="169dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/relativeLayout2"
+         />
+
 </RelativeLayout>

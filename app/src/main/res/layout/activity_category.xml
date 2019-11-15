@@ -4,35 +4,70 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.lemon.piece.dodamdodam.CategoryActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/background4"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="48dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="194dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="50dp"
         android:id="@+id/message"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="대화"/>
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/imageView"
+        android:background="@drawable/message" />
+
     <Button
-        android:layout_below="@id/message"
+        android:layout_marginBottom="50dp"
         android:id="@+id/graph"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="통계"/>
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_below="@+id/message"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/graph"
+         />
+
     <Button
-        android:layout_below="@id/graph"
         android:id="@+id/diary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="일기장"/>
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+        android:layout_marginBottom="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/graph"
+
+        android:background="@drawable/diary"
+ />
+
     <Button
-        android:layout_below="@id/diary"
         android:id="@+id/community"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="게시판"/>
-    <Button
-        android:layout_below="@id/community"
-        android:id="@+id/edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="정보수정"/>
+        android:layout_width="250dp"
+        android:layout_height="80dp"
+
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/diary"
+
+        android:background="@drawable/community" />
 
 </RelativeLayout>

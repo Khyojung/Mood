@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -21,8 +22,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText id;
     EditText pw;
     EditText name;
-    EditText age;
-    EditText email;
+    EditText again;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,8 +30,7 @@ public class SignUpActivity extends AppCompatActivity {
         id = (EditText) findViewById(R.id.edit_id);
         pw = (EditText) findViewById(R.id.edit_pw);
         name = (EditText) findViewById(R.id.edit_name);
-        age = (EditText) findViewById(R.id.edit_age);
-        email = (EditText) findViewById(R.id.edit_email);
+        again = findViewById(R.id.edit_pw_again);
 
         Button button = (Button)findViewById(R.id.edit_button);
         button.setOnClickListener(new View.OnClickListener(){
@@ -41,17 +40,23 @@ public class SignUpActivity extends AppCompatActivity {
                 String _id = id.getText().toString();
                 String _pw = pw.getText().toString();
                 String _name = name.getText().toString();
-                String _age = age.getText().toString();
-                String _email = email.getText().toString();
+                String _pw_again = again.getText().toString();
 
-                try{
-                    InsertData task = new InsertData(SignUpActivity.this);
-                    task.execute("http://168.188.126.175/dodam/insert.php", _id, _pw, _name, _age, _email);
-                }catch (Exception e){
-                    Log.d("error", String.valueOf(e));
-                }finally {
-                    finish();
+                if(_pw.equals(_pw_again)){
+                    try{
+                        InsertData task = new InsertData(SignUpActivity.this);
+                        task.execute("http://168.188.126.175/dodam/insert.php", _id, _pw, _name);
+                    }catch (Exception e){
+                        Log.d("error", String.valueOf(e));
+                    }finally {
+                        finish();
+                    }
+                }else{
+
+                    Toast.makeText(SignUpActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_LONG).show();
                 }
+
+
 
 
 
@@ -74,11 +79,9 @@ class InsertData extends AsyncTask<String, Void, String>{
         String id = (String)params[1];
         String password = (String)params[2];
         String name = (String)params[3];
-        String age = (String)params[4];
-        String email = (String)params[5];
 
         String serverURL = (String)params[0];
-        String postParameters = "USER_ID=" + id + "&USER_PWD=" + password+ "&USER_NAME=" + name+ "&USER_AGE=" + age+ "&USER_GENDER=" + "1"+ "&USER_EMAIL=" + email;
+        String postParameters = "USER_ID=" + id + "&USER_PWD=" + password+ "&USER_NAME=" + name+ "";
 
 
         try {
@@ -123,6 +126,7 @@ class InsertData extends AsyncTask<String, Void, String>{
 
             bufferedReader.close();
 
+            Log.e("2222",sb.toString());
 
             return sb.toString();
 

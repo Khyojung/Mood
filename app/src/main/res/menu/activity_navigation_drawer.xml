@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+<item
+    android:icon="@drawable/heart_red"
+    android:title="글쓰기"/>
+
+    <item
+        android:title="Category">
+        <menu>
+        <item
+            android:id="@+id/nav_happy"
+            android:title="기쁨" />
+        <item
+            android:id="@+id/nav_dis"
+            android:title="우울" />
+        <item
+            android:id="@+id/nav_angry"
+            android:title="분노" />
+        <item
+            android:id="@+id/nav_sad"
+            android:title="슬픔" />
+        </menu>
+    </item>
+
+
+
+
+
+</menu>

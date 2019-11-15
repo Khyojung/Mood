@@ -6,31 +6,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.lemon.piece.dodamdodam.category.CommunityActivity;
-import com.lemon.piece.dodamdodam.category.EditActivity;
+import com.lemon.piece.dodamdodam.category.DiaryActivity;
 import com.lemon.piece.dodamdodam.category.GraphActivity;
 import com.lemon.piece.dodamdodam.category.MessageActivity;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener{
 
+    String id;
+    String name;
+
     Button message;
     Button graph;
     Button community;
-    Button edit;
+    Button diary;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
 
+        Intent intent = getIntent();
+        id = intent.getExtras().getString("id");
+        name = intent.getExtras().getString("name");
+
         message = findViewById(R.id.message);
         graph = findViewById(R.id.graph);
         community = findViewById(R.id.community);
-        edit = findViewById(R.id.edit);
+        diary = findViewById(R.id.diary);
+
 
         message.setOnClickListener(this);
         graph.setOnClickListener(this);
         community.setOnClickListener(this);
-        edit.setOnClickListener(this);
+        diary.setOnClickListener(this);
 
     }
 
@@ -46,12 +53,14 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
                 intent = new Intent(this, GraphActivity.class);
                 break;
             case R.id.community:
-                intent = new Intent(this, CommunityActivity.class);
+                intent = new Intent(this, NavigationActivity.class);
                 break;
-            case R.id.edit:
-                intent = new Intent(this, EditActivity.class);
+            case R.id.diary:
+                intent = new Intent(this, DiaryActivity.class);
                 break;
         }
+        intent.putExtra("id", id);
+        intent.putExtra("name",name);
         startActivity(intent);
     }
 }

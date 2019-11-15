@@ -25,6 +25,8 @@ public class SignInActivity extends AppCompatActivity {
 
     String id;
     String pw;
+
+    Boolean result = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,14 +34,27 @@ public class SignInActivity extends AppCompatActivity {
 
 
 
-        Button button = (Button)findViewById(R.id.check_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button login = (Button)findViewById(R.id.Login);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 id = ((EditText)findViewById(R.id.check_id)).getText().toString();
                 pw = ((EditText)findViewById(R.id.check_pw)).getText().toString();
                 GetDataJSON getDataJSON = new GetDataJSON(SignInActivity.this);
                 getDataJSON.execute("http://168.188.126.175/dodam/login.php", id, pw);
+                try {
+                    Thread.sleep(4000);
+                    finish();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        Button singUp = findViewById(R.id.SignUp);
+        singUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
             }
         });
 
@@ -47,8 +62,9 @@ public class SignInActivity extends AppCompatActivity {
 }
 class GetDataJSON extends AsyncTask<String, Void, String> {
     private Context context;
-    String te = null;
+    String te[] = null;
     String id = null;
+    Boolean re = false;
 
     public GetDataJSON(Context con){
         this.context = con;
@@ -95,8 +111,8 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
             bufferedReader.close();
 
 
-            te = sb.toString();
-            Log.e("asdf", te);
+            te = sb.toString().split(",");
+            Log.e("asdf", sb.toString());
             return sb.toString();
 
         } catch (MalformedURLException e) {
@@ -115,12 +131,12 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
         super.onPostExecute(aVoid);
 
 
-        if (te.equals("success")) {
-            Log.e("RESULT", "성공적으로 처리되었습니다!");
+        if (te[0].equals("success")) {
             Log.e("RESULT", "성공적으로 처리되었습니다!");
             Intent intent = new Intent(context, CategoryActivity.class);
+            intent.putExtra("id", id);
+            intent.putExtra("name",te[1]);
             context.startActivity(intent);
-
 
         } else if (te.equals("error")) {
             Log.e("RESULT", "비밀번호가 일치하지 않습니다.");
@@ -128,6 +144,9 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
 
         }
 
+    }
+    public boolean getRe(){
+        return re;
     }
 
 

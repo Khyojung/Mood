@@ -5,11 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.lemon.piece.dodamdodam.R;
 
-public class EditActivity extends AppCompatActivity {
+public class DiaryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit);
+        setContentView(R.layout.activity_diary);
     }
 }

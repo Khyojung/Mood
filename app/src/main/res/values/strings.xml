@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Dodamdodam</string>
+    <string name="first_meet">안녕 난 만다린이야</string>
+    <string name="quest0">질문0</string>
+    <string name="quest1">질문1</string>
+    <string name="quest2">질문2</string>
+    <string name="quest3">질문3</string>
+    <string name="quest4">질문4</string>
+    <string name="quest5">질문5</string>
+    <string name="quest6">질문6</string>
+    <string name="quest7">질문7</string>
+    <string name="quest8">질문8</string>
+    <string name="quest9">질문9</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
 </resources>
