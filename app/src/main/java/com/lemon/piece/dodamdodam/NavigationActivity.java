@@ -11,8 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 
-public class NavigationActivity extends AppCompatActivity {
+import com.lemon.piece.dodamdodam.category.CommunityActivity;
 
+public class NavigationActivity extends AppCompatActivity implements View.OnClickListener{
+
+    String category;
     String id;
     String name;
     @Override
@@ -30,7 +33,7 @@ public class NavigationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent write = new Intent(NavigationActivity.this, WriteCommunityActivity.class);
                 write.putExtra("id", id);
-                write.putExtra("name",name);
+                write.putExtra("name", name);
                 startActivity(write);
             }
         });
@@ -46,8 +49,20 @@ public class NavigationActivity extends AppCompatActivity {
         toggle.syncState();
 
         ConstraintLayout constraintLayout = (ConstraintLayout) findViewById(R.id.nav_view);
-    }
+        //View view = getLayoutInflater().inflate(R.layout.navigation_menu, null);
 
+        ImageButton nav_happy = findViewById(R.id.nav_menu_happy);
+        ImageButton nav_sad = findViewById(R.id.nav_menu_sad);
+        ImageButton nav_angry = findViewById(R.id.nav_menu_angry);
+        ImageButton nav_dis = findViewById(R.id.nav_menu_dis);
+
+        nav_angry.setOnClickListener(this);
+        nav_dis.setOnClickListener(this);
+        nav_sad.setOnClickListener(this);
+        nav_happy.setOnClickListener(this);
+
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -59,5 +74,26 @@ public class NavigationActivity extends AppCompatActivity {
     }
 
 
-
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent(this, CommunityActivity.class);
+        switch (view.getId()){
+            case R.id.nav_menu_angry:
+                category = "angry";
+                break;
+            case R.id.nav_menu_dis:
+                category = "dis";
+                break;
+            case R.id.nav_menu_sad:
+                category = "sad";
+                break;
+            case R.id.nav_menu_happy:
+                category = "happy";
+                break;
+        }
+        intent.putExtra("id",id);
+        intent.putExtra("name", name);
+        intent.putExtra("category", category);
+        startActivity(intent);
+    }
 }

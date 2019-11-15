@@ -44,7 +44,7 @@ public class SignInActivity extends AppCompatActivity {
                 getDataJSON.execute("http://168.188.126.175/dodam/login.php", id, pw);
                 try {
                     Thread.sleep(4000);
-                    finish();
+                    //finish();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
