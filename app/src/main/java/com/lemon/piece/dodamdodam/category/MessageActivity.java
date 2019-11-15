@@ -1,81 +1,57 @@
 package com.lemon.piece.dodamdodam.category;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
+import com.lemon.piece.dodamdodam.ChatMessage;
+import com.lemon.piece.dodamdodam.ChatMessageAdapter;
 import com.lemon.piece.dodamdodam.R;
 
-import java.util.ArrayList;
-
 public class MessageActivity extends AppCompatActivity {
+    private ChatMessageAdapter adapter;
 
+    private EditText chatText;
 
-    ArrayList<TextView> mandarin_text = new ArrayList<>();
-    ArrayList<String> mandarin_array = new ArrayList<>();
-    ScrollView sv;
-    LinearLayout layout;
-    EditText editText;
+    Intent intent;
+    private boolean side = false;
 
-    String quest = "quest";
-    int child_count = 0;
-    int count;
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
         setContentView(R.layout.activity_message);
-        makeMandarinText();
+        final RecyclerView recyclerView = findViewById(R.id.chat_list);
 
-        sv = findViewById(R.id.chat_list);
-        layout = findViewById(R.id.chat_layout);
-        //sv.addView(layout);
-        editText = findViewById(R.id.chat_edit);
-        count = 0;
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
 
-        ArrayAdapter<String> user_array = new ArrayAdapter<String>(this, R.layout.list_item_mandarin);
+        adapter = new ChatMessageAdapter();
+        recyclerView.setAdapter(adapter);
 
-        ImageButton btn = findViewById(R.id.chat_button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-
-
-                View user_view = View.inflate(MessageActivity.this, R.layout.list_item_mandarin, null);
-                //TextView user_temp = user_view.findViewById(R.id.user_text);
-                TextView user_temp = new TextView(MessageActivity.this);
-                user_temp.setBackgroundResource(R.drawable.me_);
-                user_temp.setText(editText.getText().toString());
-                layout.addView(user_temp, child_count);
-                child_count++;
-
-                editText.setText("");
-                layout.addView(mandarin_text.get(count), child_count);
-                child_count++;
-
-                count++;
-
+        chatText = (EditText) findViewById(R.id.chat_edit);
+        chatText.setOnKeyListener(new View.OnKeyListener() {
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    ChatMessage chatMessage = new ChatMessage(side, chatText.getText().toString());
+                    adapter.addItem(chatMessage);
+                    chatText.setText("");
+                    side = !side;
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                    return true;
+                }
+                return false;
             }
         });
 
 
+
+
     }
-    public void makeMandarinText(){
 
-        View mandarin_view = View.inflate(this, R.layout.list_item_mandarin, null);
-
-        for(int i = 0; i < 9; i++){
-            TextView mandarin = new TextView(this);
-            mandarin.setBackgroundResource(R.drawable.mandarin_1);
-            mandarin.setText(getString(getResources().getIdentifier((quest + i), "string", getPackageName())));
-
-            mandarin_text.add(mandarin);
-        }
-    }
 }
