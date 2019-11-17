@@ -138,7 +138,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
             intent.putExtra("name",te[1]);
             context.startActivity(intent);
 
-        } else if (te.equals("error")) {
+        } else if (te[0].equals("error")) {
             Log.e("RESULT", "비밀번호가 일치하지 않습니다.");
             Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
 

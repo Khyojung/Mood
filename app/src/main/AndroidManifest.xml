@@ -24,6 +24,11 @@
         <activity android:name=".category.GraphActivity" />
         <activity android:name=".category.CommunityActivity" />
         <activity android:name=".category.diary.DiaryActivity" >
+
+        </activity>
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,15 +36,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SplashActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".WriteCommunityActivity" />
+        <activity android:name=".WriteCommunityActivity" >
+
+        </activity>
 
         <activity android:name=".category.diary.WriteDiaryActivity">
 

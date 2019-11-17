@@ -37,8 +37,8 @@ public class DiaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
         Intent intent = getIntent();
-        id = "918fall";//intent.getExtras().getString("id");
-        name = "khj";//intent.getExtras().getString("name");
+        id = intent.getExtras().getString("id");
+        name = intent.getExtras().getString("name");
 
         handler = new Handler(){
             @Override
