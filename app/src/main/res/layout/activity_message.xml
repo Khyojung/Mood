@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    tools:context="com.lemon.piece.dodamdodam.category.chat.MessageActivity">
+    <ImageView
+        android:background="@drawable/background2"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <ImageView
+        android:background="@drawable/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_width="194dp"
+        android:layout_height="40dp"/>
+<LinearLayout
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:id="@+id/message_day"
+        android:text="날짜"
+        android:layout_marginTop="50dp"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp" />
+    <android.support.v7.widget.RecyclerView
+        android:paddingRight="30dp"
+        android:layout_weight="9"
+        android:divider="@android:color/white"
+        android:dividerHeight="0dp"
+        android:transcriptMode="alwaysScroll"
+        android:id="@+id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    </android.support.v7.widget.RecyclerView>
+    <FrameLayout
+        android:layout_margin="20dp"
+        android:layout_weight="1"
+        android:layout_below="@id/chat_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+
+        <EditText
+            android:visibility="invisible"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="#c6c6c6"
+            android:id="@+id/chat_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/button_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:fontFamily="@font/font"
+                android:text="응"
+                android:layout_margin="8dp"
+                android:background="@drawable/button_custom"
+                android:id="@+id/chat_yes"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:fontFamily="@font/font"
+                android:text="아니"
+                android:layout_margin="8dp"
+                android:background="@drawable/button_custom"
+                android:id="@+id/chat_no"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>
+
+</RelativeLayout>

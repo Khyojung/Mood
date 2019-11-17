@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Dodamdodam</string>
+    <string name="first_meet">안녕 난 만다린이야</string>
+    <string name="quest0">짜증날 땐 짜장면~ 우울할 땐 울면~ 복잡할 땐 볶음밥~ 탕탕탕수육!</string>
+    <string name="quest1">안녕 나는 만다린이다냥. 너 방금 이 구절 들어봤냥? \n 1. 응 2. 아니</string>
+    <string name="quest2">너도 역시 아는구나~ 이게 바로 나다냥! 짜증날 땐 만다린~ 우울할 때도 만다린~ 복잡할 땐 만다린~ 만만만만 만다린~! 만다린이 오늘부터 너의 멘탈관리자가 되어도 될까냥!</string>
+    <string name="quest3">아직까지 그걸 모른다니,, 그럼 내가 알려줄게냥! 짜증날 땐 만다린~ 우울할 때도 만다린~ 복잡할 땐 만다린~ 만만만만 만다린~! 만다린이 오늘부터 너의 멘탈관리자가 될까냥!</string>
+    <string name="quest4">한 번에 알려주면 재미없잖~ 그냥 너는 나만 따라오면 됀다냥!</string>
+    <string name="quest5">그럼 지금부터 니 이야기를 시작해보자 냥!</string>
+    <string name="quest6">오늘 너는 대부분의 시간을 어디에서 보냈냥?</string>
+    <string name="quest7">그곳에서 너는 뭘했냥?</string>
+    <string name="quest8">그랬냥,, 나도 하고싶다냥,,</string>
+    <string name="quest9">나말고 누구랑 놀았냥?</string>
+    <string name="quest10">나는 사실 집착의 끝판왕이다냥,,</string>
+    <string name="quest11">에 왜 갔는지도 말해달라냥 ,,</string>
+    <string name="quest12">이제 궁금증이 좀 해결된다냥~</string>
+    <string name="quest13">이제 궁금증이 좀 해결된다냥~</string>
+    <string name="quest14">이 오늘 거기가서 기분이 어땟냥?</string>
+    <string name="quest15">평화로워..ZZ</string>
+    <string name="quest16">헥!,, 무슨일이다냥 나한테만 얘기해줘냥,,</string>
+    <string name="quest17">그랬구나,,그랬구나 </string>
+    <string name="quest18">오늘 너의하루는 [감정] 인거같다냥..</string>
+    <string name="quest19">니가 좋으면 나도 좋고 니가 슬프면 나도 슬프다냥,,</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>
