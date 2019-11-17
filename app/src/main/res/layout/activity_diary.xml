@@ -1,9 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.lemon.piece.dodamdodam.category.DiaryActivity">
 
-</android.support.constraint.ConstraintLayout>
+    tools:context="com.lemon.piece.dodamdodam.CategoryActivity">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="@drawable/background2"
+        tools:layout_editor_absoluteX="80dp"
+        tools:layout_editor_absoluteY="48dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="194dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/write_diary"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/imageView2"
+        android:layout_alignStart="@+id/imageView2"
+        android:layout_alignTop="@+id/recyclerView"
+        android:layout_marginLeft="59dp"
+        android:layout_marginStart="59dp"
+        android:background="@drawable/diary_heart" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_margin="40dp"
+
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_below="@+id/imageView"
+        android:id="@+id/recyclerView"></android.support.v7.widget.RecyclerView>
+
+
+</RelativeLayout>

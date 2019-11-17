@@ -72,7 +72,7 @@ public class WriteCommunityActivity extends AppCompatActivity {
                     }catch (Exception e){
                         e.printStackTrace();
                     }finally {
-                        Toast.makeText(WriteCommunityActivity.this, "게시글이 작성되었습니다.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WriteCommunityActivity.this, "게시글을 작성했다냥!", Toast.LENGTH_SHORT).show();
                         finish();
                     }
 

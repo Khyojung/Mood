@@ -1,4 +1,4 @@
-package com.lemon.piece.dodamdodam;
+package com.lemon.piece.dodamdodam.category.chat;
 
 /**
  * Created by hyojung on 2019-11-15.

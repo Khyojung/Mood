@@ -19,6 +19,8 @@ android {
 }
 
 dependencies {
+
+    compile 'com.github.gcacace:signature-pad:1.2.1'
     //noinspection GradleCompatible
     compile 'com.android.support:design:27.1.0'
     implementation fileTree(dir: 'libs', include: ['*.jar'])

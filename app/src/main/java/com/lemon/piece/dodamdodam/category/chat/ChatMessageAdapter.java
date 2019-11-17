@@ -1,4 +1,4 @@
-package com.lemon.piece.dodamdodam;
+package com.lemon.piece.dodamdodam.category.chat;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.lemon.piece.dodamdodam.R;
 
 import java.util.ArrayList;
 
@@ -15,10 +17,17 @@ import java.util.ArrayList;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    String[] text_set = {"m","m","u","m","u","m","m","u","m","u","m","m","u","m","m","u","m","m","u"};
+
     // adapter에 들어갈 list 입니다.
     private ArrayList<ChatMessage> listData = new ArrayList<>();
     private TextView textView2;
     private TextView textView1;
+
+    boolean test;
+    public void setTest(boolean b){
+        test = b;
+    }
 
 
     @NonNull
@@ -41,7 +50,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public int getItemViewType(int position) {
         // Just as an example, return 0 or 2 depending on position
         // Note that unlike in ListView adapters, types don't have to be contiguous
-        return position % 2;
+        int returnVal = 0;
+        if(text_set[position].equals("u")){
+            returnVal = 1;
+        }
+        return returnVal;
+        //return position % 2;
     }
 
     @Override

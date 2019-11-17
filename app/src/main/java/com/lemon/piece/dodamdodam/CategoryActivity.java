@@ -6,9 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.lemon.piece.dodamdodam.category.DiaryActivity;
+import com.lemon.piece.dodamdodam.category.diary.DiaryActivity;
 import com.lemon.piece.dodamdodam.category.GraphActivity;
-import com.lemon.piece.dodamdodam.category.MessageActivity;
+import com.lemon.piece.dodamdodam.category.chat.MessageActivity;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener{
 
