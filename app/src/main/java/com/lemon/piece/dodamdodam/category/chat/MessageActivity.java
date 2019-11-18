@@ -22,20 +22,22 @@ public class MessageActivity extends AppCompatActivity {
     private EditText chatText;
     int count = 0;
 
-    Handler mandarin_handler;
-    Runnable mandarin_runnable;
+    Handler mandarin_handler, userHandler;
+    Runnable mandarin_runnable, user_runnable;
     boolean mandarin_chat = false;
     Intent intent;
     private boolean side = false;
     LinearLayout layout;
 
+    Button yes, no;
+    RecyclerView recyclerView;
     @SuppressLint("HandlerLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout.activity_message);
-        final RecyclerView recyclerView = findViewById(R.id.chat_list);
+        recyclerView = (RecyclerView) findViewById(R.id.chat_list);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -54,9 +56,67 @@ public class MessageActivity extends AppCompatActivity {
         chatMandarin();
         chatMandarin();
 
+        LinearLayout button = findViewById(R.id.button_layout);
+        button.setVisibility(View.VISIBLE);
 
-        Button yes = findViewById(R.id.chat_yes);
-        Button no = findViewById(R.id.chat_no);
+
+        yes = findViewById(R.id.chat_yes);
+        no = findViewById(R.id.chat_no);
+        no.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                if(count == 2){
+                    String temp = "아니";
+                    mandarin_chat = false;
+                    ChatMessage chatMessage = new ChatMessage(side, temp);
+                    adapter.addItem(chatMessage);
+                    //adapter.notifyDataSetChanged();
+
+                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                }
+                if(count == 3 || count == 4){
+                    String temp = "멘탈관리자?";
+                    mandarin_chat = false;
+                    ChatMessage chatMessage = new ChatMessage(side, temp);
+                    adapter.addItem(chatMessage);
+                    //adapter.notifyDataSetChanged();
+
+                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                }
+
+            }
+        });
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(count == 2){
+                    String temp = "응";
+                    mandarin_chat = true;
+                    ChatMessage chatMessage = new ChatMessage(side, temp);
+                    adapter.addItem(chatMessage);
+                    adapter.notifyDataSetChanged();
+
+
+                }
+                if(count == 3 || count == 4){
+                    String temp = "그게뭔데?";
+                    mandarin_chat = false;
+                    ChatMessage chatMessage = new ChatMessage(side, temp);
+                    adapter.addItem(chatMessage);
+                    adapter.notifyDataSetChanged();
+
+                }
+                mandarin_handler.postDelayed(mandarin_runnable, 2000);
+
+
+                recyclerView.scrollToPosition(adapter.getItemCount()-1);
+
+            }
+        });
+
         chatText = (EditText) findViewById(R.id.chat_edit);
         chatText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -64,11 +124,6 @@ public class MessageActivity extends AppCompatActivity {
                     String temp = chatText.getText().toString();
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
-                    if(count == 2 && temp.equals("1")){
-                        mandarin_chat = true;
-                    }else if(count == 2 && temp.equals("2")){
-                        mandarin_chat = false;
-                    }
                     mandarin_handler.postDelayed(mandarin_runnable, 2000);
 
                     chatText.setText("");
@@ -87,21 +142,33 @@ public class MessageActivity extends AppCompatActivity {
     public void chatMandarin(){
         //Message message = mandarin_handler.obtainMessage();
         if(count == 2 && mandarin_chat == true){
+            //응이라고 대답했을때
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest2"), "string", getPackageName())));
             adapter.addItem(chatMessage);
-
-            count++;
-        }else if(count == 2 && mandarin_chat == false){
+            //adapter.notifyDataSetChanged();
+            count=4;
+            yes.setText("그게뭔데?");
+            no.setText("멘탈관리자?");
+        }else if(count == 2 && mandarin_chat == false) {
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest3"), "string", getPackageName())));
             adapter.addItem(chatMessage);
             count = 4;
+            yes.setText("그게뭔데?");
+            no.setText("멘탈관리자?");
+        }else if(count == 4 || count == 5 || count == 6){
+            ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest" + count), "string", getPackageName())));
+            adapter.addItem(chatMessage);
+
+            count=count+1;
+            adapter.notifyDataSetChanged();
         }else{
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest" + count), "string", getPackageName())));
             adapter.addItem(chatMessage);
 
-            count++;
+            count=count+1;
         }
-
+        //adapter.notifyDataSetChanged();
+        recyclerView.scrollToPosition(adapter.getItemCount()-1);
         //message.arg1 = 0;
     }
     @Override

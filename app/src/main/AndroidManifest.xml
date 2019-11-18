@@ -5,29 +5,15 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".category.chat.MessageActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".category.GraphActivity" />
-        <activity android:name=".category.CommunityActivity" />
-        <activity android:name=".category.diary.DiaryActivity" >
-
-        </activity>
-        <activity
-            android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,15 +21,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".category.GraphActivity" />
+        <activity android:name=".category.CommunityActivity" />
+        <activity android:name=".category.diary.DiaryActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
-            android:theme="@style/Theme.AppCompat.NoActionBar"></activity>
-        <activity android:name=".WriteCommunityActivity" >
-
-        </activity>
-
-        <activity android:name=".category.diary.WriteDiaryActivity">
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".WriteCommunityActivity"></activity>
+        <activity android:name=".category.diary.WriteDiaryActivity"></activity>
+        <activity android:name=".default_user.Survey">
 
         </activity>
     </application>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_centerHorizontal="true"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/survey_3_question"
+            android:paddingBottom="20dp"
+            android:id="@+id/survey_3_question"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="50dp"/>
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_below="@+id/survey_3_question"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:padding="20dp"
+
+                    android:src="@drawable/survey3_1_answer"
+                    android:layout_width="300dp"
+                    android:layout_height="100dp" />
+
+                <RadioButton
+                    android:id="@+id/survey3_1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:button="@drawable/survey" />
+            </FrameLayout>
+            <FrameLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:padding="22dp"
+                    android:src="@drawable/survey3_2_answer"
+                    android:layout_width="300dp"
+                    android:layout_height="100dp" />
+                <RadioButton
+                    android:id="@+id/survey3_2"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:button="@drawable/survey"/>
+            </FrameLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>
