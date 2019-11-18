@@ -1,24 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background3"
     tools:context="com.lemon.piece.dodamdodam.category.GraphActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background2">
+
+
     <ImageView
-        android:background="@drawable/logo_white"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/imageView"
         android:layout_width="194dp"
-        android:layout_height="40dp"/>
-    <HorizontalScrollView
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_question"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/imageView"
+        android:layout_marginTop="27dp"
+        android:background="@drawable/question_cups" />
+
+    <ImageView
+        android:id="@+id/cup_day_1"
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_below="@+id/button_question"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="22dp"
+        android:layout_toLeftOf="@+id/cup_day_2"
+        android:layout_toStartOf="@+id/cup_day_2"
+        android:src="@drawable/cup1" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/cup_day_6"
+        android:layout_alignStart="@+id/cup_day_6"
+        android:layout_alignTop="@+id/cup_day_1"
+        android:src="@drawable/cup2"
+        android:id="@+id/cup_day_2" />
+
+    <ImageView
+        android:id="@+id/cup_day_3"
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/cup_day_6"
+        android:layout_alignLeft="@+id/cup_day_1"
+        android:layout_alignStart="@+id/cup_day_1"
+        android:layout_marginBottom="42dp"
+        android:src="@drawable/cup3" />
+
+    <ImageView
+        android:src="@drawable/cup4"
+        android:id="@+id/cup_day_4"
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/cup_day_2"
+        android:layout_alignStart="@+id/cup_day_2"
+        android:layout_alignTop="@+id/cup_day_3" />
+
+    <ImageView
+        android:id="@+id/cup_day_5"
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/cup_day_4"
+        android:layout_toLeftOf="@+id/button_question"
+        android:layout_toStartOf="@+id/button_question"
+        android:src="@drawable/cup5" />
+
+    <ImageView
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_alignTop="@+id/cup_day_7"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/cup6"
+        android:id="@+id/cup_day_6" />
+
+    <ImageView
+        android:id="@+id/cup_day_7"
+        android:layout_width="70dp"
+        android:layout_height="150dp"
+        android:layout_alignLeft="@+id/cup_day_5"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/cup_day_5"
+        android:layout_marginBottom="54dp"
+        android:src="@drawable/cup7" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/graph_question_visible"
+        android:visibility="invisible"
+        android:layout_margin="20dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:layout_margin="10dp"
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </LinearLayout>
-    </HorizontalScrollView>
+            android:layout_height="match_parent"
+            android:background="@drawable/graph_question"/>
+        <Button
+            android:layout_margin="20dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:id="@+id/graph_question_exit"
+            android:background="@drawable/graph_exit"/>
+    </RelativeLayout>
 
-</RelativeLayout>
+</FrameLayout>

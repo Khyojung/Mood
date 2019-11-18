@@ -15,17 +15,19 @@
         <activity
             android:name=".category.chat.MessageActivity"
             android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".SignUpActivity" />
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".CategoryActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".category.GraphActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity" />
-        <activity android:name=".SignInActivity" />
-        <activity android:name=".CategoryActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".category.GraphActivity" />
         <activity android:name=".category.CommunityActivity" />
         <activity android:name=".category.diary.DiaryActivity">
 

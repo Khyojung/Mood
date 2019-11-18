@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lemon.piece.dodamdodam.R;
@@ -28,7 +29,11 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 public class MessageActivity extends AppCompatActivity {
     private ChatMessageAdapter adapter;
@@ -64,13 +69,15 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayout button;
 
     String id, name;
+    int total_size;
+    String day;
     @SuppressLint("HandlerLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        id = "918fall";//intent.getExtras().getString("id");
-        name = "khj";//intent.getExtras().getString("name");
+        id = intent.getExtras().getString("id");
+        name = intent.getExtras().getString("name");
         setContentView(R.layout.activity_message);
 
         picker = findViewById(R.id.picker);
@@ -79,6 +86,7 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.chat_list);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
 
         adapter = new ChatMessageAdapter();
         recyclerView.setAdapter(adapter);
@@ -91,6 +99,9 @@ public class MessageActivity extends AppCompatActivity {
             }
         };
 
+        day = this.getDayofWeek();
+        TextView textView = findViewById(R.id.message_day);
+        textView.setText(this.getDay());
         chatMandarin();
         chatMandarin();
 
@@ -342,6 +353,8 @@ public class MessageActivity extends AppCompatActivity {
                     mandarin_handler.postDelayed(mandarin_runnable, 2000);
                 }
                 if(count == 40){
+                    SetTotalData setTotalData = new SetTotalData(MessageActivity.this);
+                    setTotalData.execute("http://168.188.126.175/dodam/set_total_data.php", id, emotion_result, String.valueOf(total_size), String.valueOf(happyness), String.valueOf(sadness), String.valueOf(annoyed), String.valueOf(depressed), day);
                     Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
                     finish();
                 }
@@ -395,6 +408,8 @@ public class MessageActivity extends AppCompatActivity {
                     mandarin_handler.postDelayed(mandarin_runnable, 2000);
                 }
                 if(count == 40){
+                    SetTotalData setTotalData = new SetTotalData(MessageActivity.this);
+                    setTotalData.execute("http://168.188.126.175/dodam/set_total_data.php", id, emotion_result, String.valueOf(total_size), String.valueOf(happyness), String.valueOf(sadness), String.valueOf(annoyed), String.valueOf(depressed), day);
                     Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
                     finish();
                 }
@@ -430,6 +445,40 @@ public class MessageActivity extends AppCompatActivity {
 
 
 
+    }
+    public String getDayofWeek(){
+        Calendar cal = Calendar.getInstance();
+        String strWeek = null;
+        int nWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if(nWeek == 1){
+            strWeek = "SUNDAY";
+        }else if(nWeek == 2){
+            strWeek = "MONDAY";
+        }else if(nWeek == 3){
+            strWeek = "TUESDAY";
+        }else if(nWeek == 4){
+            strWeek = "WEDNESDAY";
+        }else if(nWeek == 5){
+            strWeek = "THURSDAY";
+        }else if(nWeek == 6){
+            strWeek = "FRIDAY";
+        }else if(nWeek == 7){
+            strWeek = "SATURDAY";
+        }
+        return strWeek;
+
+
+    }
+    public String getDay(){
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat dayFormat = new SimpleDateFormat("dd", Locale.getDefault());
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MM", Locale.getDefault());
+        SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy", Locale.getDefault());
+
+        String year = yearFormat.format(currentTime);
+        String month = monthFormat.format(currentTime);
+        String day = dayFormat.format(currentTime);
+        return year + " : "+month+ " : " +day;
     }
     public void chatMandarin(){
         //Message message = mandarin_handler.obtainMessage();
@@ -516,7 +565,9 @@ public class MessageActivity extends AppCompatActivity {
 
         }else if(count == 17){
             int[] temp = {happyness, sadness, annoyed, depressed};
+
             Arrays.sort(temp);
+            total_size = temp[3];
             if(temp[3] == happyness){
                 emotion = "행복";
                 emotion_result = "happyness";
@@ -991,6 +1042,85 @@ class GetMusicData extends AsyncTask<String, Void, String> {
 
             te = sb.toString().split(",");
             Log.e("music", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+class SetTotalData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String id = null;
+    String day;
+    String TODAY_FEELINGS, TODAY_SIZE,TODAY_HAPPINESS,TODAY_SADNESS,TODAY_ANNOYED,TODAY_DEPRESSED;
+
+    public SetTotalData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        TODAY_FEELINGS = params[2];
+        TODAY_SIZE = params[3];
+        TODAY_HAPPINESS = params[4];
+        TODAY_SADNESS = params[5];
+        TODAY_ANNOYED = params[6];
+        TODAY_DEPRESSED = params[7];
+        day = params[8];
+
+        String param = "id=" + id+"&TODAY_FEELINGS="+TODAY_FEELINGS +"&TODAY_SIZE="+TODAY_SIZE +"&TODAY_HAPPINESS="+TODAY_HAPPINESS +"&TODAY_SADNESS="+TODAY_SADNESS +"&TODAY_ANNOYED="+TODAY_ANNOYED +"&TODAY_DEPRESSED="+TODAY_DEPRESSED + "&day="+day+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("total", sb.toString());
             return sb.toString();
 
         } catch (MalformedURLException e) {
