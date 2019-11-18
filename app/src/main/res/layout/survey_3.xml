@@ -14,14 +14,14 @@
             android:layout_width="300dp"
             android:layout_height="100dp"
             android:layout_marginBottom="50dp"/>
-        <LinearLayout
+        <FrameLayout
             android:gravity="center"
             android:orientation="vertical"
             android:layout_below="@+id/survey_3_question"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <FrameLayout
-
+            android:layout_height="200dp">
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
                 <ImageView
@@ -30,31 +30,39 @@
                     android:src="@drawable/survey3_1_answer"
                     android:layout_width="300dp"
                     android:layout_height="100dp" />
-
-                <RadioButton
-                    android:id="@+id/survey3_1"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_gravity="center_horizontal"
-                    android:button="@drawable/survey" />
-            </FrameLayout>
-            <FrameLayout
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
                 <ImageView
                     android:padding="22dp"
                     android:src="@drawable/survey3_2_answer"
                     android:layout_width="300dp"
                     android:layout_height="100dp" />
-                <RadioButton
-                    android:id="@+id/survey3_2"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:button="@drawable/survey"/>
-            </FrameLayout>
-        </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RadioGroup
+                    android:id="@+id/survey3_radio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <RadioButton
+                        android:id="@+id/survey3_1"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center_horizontal"
+                        android:button="@drawable/survey" />
+                    <RadioButton
+                        android:id="@+id/survey3_2"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:button="@drawable/survey"/>
+                </RadioGroup>
+
+            </LinearLayout>
+        </FrameLayout>
 
     </RelativeLayout>
 

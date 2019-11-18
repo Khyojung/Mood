@@ -20,33 +20,33 @@
             android:layout_below="@+id/survey_2_question"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <RadioButton
+            <CheckBox
                 android:id="@+id/survey2_1"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:button="@drawable/survey2_1" />
-            <RadioButton
+            <CheckBox
                 android:id="@+id/survey2_2"
                 android:layout_marginLeft="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="center_horizontal"
                 android:button="@drawable/survey2_2" />
-            <RadioButton
+            <CheckBox
                 android:id="@+id/survey2_3"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:button="@drawable/survey2_3" />
-            <RadioButton
+            <CheckBox
                 android:id="@+id/survey2_4"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:button="@drawable/survey2_4" />
-            <RadioButton
+            <CheckBox
                 android:id="@+id/survey2_5"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"

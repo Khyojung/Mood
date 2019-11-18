@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:id="@+id/chatmessage_container"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:background="@drawable/none"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+    <TextView
+
+        android:layout_width="300dp"
+
+        android:padding="30dp"
+        android:layout_height="wrap_content"
+
+        android:textAppearance="?android:attr/textAppearanceMedium"
+
+        android:text="Chat message"
+
+        android:fontFamily="@font/font"
+        android:id="@+id/chat_mandarin_visible"
+        android:gravity="center"
+        android:paddingLeft="40dp"
+
+        android:background="@drawable/mandarin_1"
+        />
+
+</LinearLayout>

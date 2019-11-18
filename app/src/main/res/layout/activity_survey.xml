@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background2"
+    android:id="@+id/survey_background"
     tools:context="com.lemon.piece.dodamdodam.default_user.Survey">
     <ImageView
         android:id="@+id/name"
@@ -14,8 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="194dp"
         android:layout_height="40dp"/>
-
-    <RelativeLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_marginTop="20dp"
         android:layout_below="@+id/name"
         android:id="@+id/drink_relative"
@@ -33,30 +33,32 @@
         </FrameLayout>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/survey"
-            android:layout_centerHorizontal="true">
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="30dp"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <Button
                 android:id="@+id/survey_before"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_toLeftOf="@+id/survey_next"
-                android:text="before" />
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="left"
+                android:background="@drawable/before_button"
+
+                 />
 
             <Button
-                android:layout_marginBottom="20dp"
                 android:id="@+id/survey_next"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/survey_before"
-                android:text="Next" />
-        </LinearLayout>
-    </RelativeLayout>
+                android:layout_width="30dp"
+                android:layout_height="50dp"
+                android:layout_gravity="right"
+                android:background="@drawable/next_button"
+                app:layout_constraintEnd_toEndOf="parent" />
+        </android.support.constraint.ConstraintLayout>
+    </android.support.constraint.ConstraintLayout>
 
 
 </RelativeLayout>

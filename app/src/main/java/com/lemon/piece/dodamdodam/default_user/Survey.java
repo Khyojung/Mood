@@ -1,22 +1,48 @@
 package com.lemon.piece.dodamdodam.default_user;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.lemon.piece.dodamdodam.R;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class Survey extends AppCompatActivity {
 
     int count =2;
     String id, name;
     Button buttonNext, buttonBefore;
+    String happyness="0" , sadness="0" , annoyed="0" , depressed ="0"; // 설문 1번
+    String[] intimacy = new String[5]; // 설문 2번
+    String survey3; // 설문 3번
+    String[] place = new String[5]; // 설문 4번
+
+    String[] survey_result = new String[4];
+
     View view;
+    RelativeLayout relativeLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +54,7 @@ public class Survey extends AppCompatActivity {
         view = null;
         count = 0;
 
+        relativeLayout = findViewById(R.id.survey_background);
         buttonNext  = (Button)findViewById(R.id.survey_next);
         buttonNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,25 +91,239 @@ public class Survey extends AppCompatActivity {
         switch (index) {
             case 0:
                 view = inflater.inflate(R.layout.survey_1, frame, false) ;
-                buttonBefore.setEnabled(false);
+                buttonBefore.setVisibility(View.INVISIBLE);
 
                 break;
             case 1:
+                EditText happy = (EditText)view.findViewById(R.id.survey_11);
+                happyness = happy.getText().toString();
+                EditText dis = (EditText)view.findViewById(R.id.survey_12);
+                depressed = dis.getText().toString();
+                EditText sad = (EditText)view.findViewById(R.id.survey_13);
+                sadness = sad.getText().toString();
+                EditText angry = (EditText)view.findViewById(R.id.survey_14);
+                annoyed = angry.getText().toString();
+
                 view = inflater.inflate(R.layout.survey_2, frame, false) ;
-                buttonBefore.setEnabled(true);
+                buttonBefore.setVisibility(View.VISIBLE);
+
+
+
+                final CheckBox survey2_1 = view.findViewById(R.id.survey2_1);
+                final CheckBox survey2_2 = view.findViewById(R.id.survey2_2);
+                final CheckBox survey2_3 = view.findViewById(R.id.survey2_3);
+                final CheckBox survey2_4 = view.findViewById(R.id.survey2_4);
+                final CheckBox survey2_5 = view.findViewById(R.id.survey2_5);
+                final int[] count = {0};
+                survey2_1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intimacy[count[0]] = "친구";
+                        count[0]++;
+                        survey2_1.setEnabled(false);
+                    }
+                });
+                survey2_2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intimacy[count[0]] = "평소 알고 지내지 않았던 인물";
+                        count[0]++;
+                        survey2_2.setEnabled(false);
+                    }
+                });
+                survey2_3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intimacy[count[0]] = "가족";
+                        count[0]++;
+                        survey2_3.setEnabled(false);
+                    }
+                });
+                survey2_4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intimacy[count[0]] = "애인";
+                        count[0]++;
+                        survey2_4.setEnabled(false);
+                    }
+                });
+                survey2_5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        intimacy[count[0]] = "혼자 있는게 좋음";
+                        count[0]++;
+                        survey2_5.setEnabled(false);
+                    }
+                });
                 break;
             case 2:
                 view = inflater.inflate(R.layout.survey_3, frame, false) ;
-                buttonNext.setEnabled(true);
+
                 break;
             case 3:
+                RadioButton radioButton1 = view.findViewById(R.id.survey3_1);
+                RadioButton radioButton2 = view.findViewById(R.id.survey3_2);
+                if(radioButton1.isChecked()) survey3 = "일을 처리할 때 성급하고 빠른 편이다";
+                if(radioButton2.isChecked()) survey3 = "일을 처리할 때 느린 편이다";
                 view = inflater.inflate(R.layout.survey_4, frame, false) ;
-                buttonNext.setEnabled(false);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+                    buttonNext.setBackground(getBaseContext().getDrawable(R.drawable.cat_save));
+                }
+                final CheckBox survey4_1 = view.findViewById(R.id.survey4_1);
+                final CheckBox survey4_2 = view.findViewById(R.id.survey4_2);
+                final CheckBox survey4_3 = view.findViewById(R.id.survey4_3);
+                final CheckBox survey4_4 = view.findViewById(R.id.survey4_4);
+                final CheckBox survey4_5 = view.findViewById(R.id.survey4_5);
+                final int[] count4 = {0};
+                survey4_1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        place[count4[0]] = "카페";
+                        count4[0]++;
+                        survey4_1.setEnabled(false);
+                    }
+                });
+                survey4_2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        place[count4[0]] = "도서관, PC방 등의 취미생ㅇ활 공간";
+                        count4[0]++;
+                        survey4_2.setEnabled(false);
+                    }
+                });
+                survey4_3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        place[count4[0]] = "음식점";
+                        count4[0]++;
+                        survey4_3.setEnabled(false);
+                    }
+                });
+                survey4_4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        place[count4[0]] = "집 혹은 기숙사";
+                        count4[0]++;
+                        survey4_4.setEnabled(false);
+                    }
+                });
+                survey4_5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        place[count4[0]] = "회사 혹은 학교";
+                        count4[0]++;
+                        survey4_5.setEnabled(false);
+                    }
+                });
+                break;
+            case 4:
+                survey_result[0] = "&base_happyness=" + happyness + "&base_sadness="+sadness + "&base_annoyed="+annoyed + "&base_depressed="+depressed;
+                survey_result[1] ="&first_intimacy=" + intimacy[0] + "&second_intimacy="+intimacy[1] + "&third_intimacy="+intimacy[2] + "&fourth_intimacy="+intimacy[3] + "&fifth_intimacy="+intimacy[4];
+                survey_result[2] ="&characteristic=" + survey3;
+                survey_result[3] = "&first_place=" + intimacy[0] + "&second_place="+intimacy[1] + "&third_place="+intimacy[2] + "&fourth_place="+intimacy[3] + "&fifth_place="+intimacy[4]+"";
+                view = inflater.inflate(R.layout.finish_survey, frame, false) ;
+                frame.removeAllViews();
+                buttonBefore.setVisibility(View.INVISIBLE);
+                buttonNext.setVisibility(View.INVISIBLE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    relativeLayout.setBackground(getBaseContext().getDrawable(R.drawable.finish_survey));
+                }
+
+                setSurveyDataJSON setSurveyDataJSON = new setSurveyDataJSON(Survey.this);
+                setSurveyDataJSON.execute("http://168.188.126.175/dodam/user_base.php",id, name, survey_result[0], survey_result[1], survey_result[2], survey_result[3]);
                 break;
         }
         if (view != null) {
             frame.addView(view) ;
         }
     }
+
+}
+
+class setSurveyDataJSON extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te = null;
+    String id;
+
+    public setSurveyDataJSON(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        String name = params[2];
+        String survey1 = params[3];
+        String survey2 = params[4];
+        String survey3 = params[5];
+        String survey4 = params[6];
+        id = params[1];
+
+        String param = "id="+id+"&name=" + name+ survey1 + survey2 + survey3 + survey4;
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString();
+            Log.e("asdf", te);
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+    @Override
+    protected void onPostExecute(String aVoid) {
+        super.onPostExecute(aVoid);
+
+        if(te.equals("success")){
+            Toast.makeText(context, "설문을 종료합니다.", Toast.LENGTH_LONG).show();
+            ((Activity)context).finish();
+        }else{
+            Toast.makeText(context, "설문을 다시 해주세요.", Toast.LENGTH_LONG).show();
+            ((Activity)context).finish();
+        }
+
+    }
+
+
 
 }
