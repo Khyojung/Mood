@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.lemon.piece.dodamdodam.CategoryActivity;
 import com.lemon.piece.dodamdodam.R;
 
 import java.io.BufferedReader;
@@ -49,8 +50,8 @@ public class Survey extends AppCompatActivity {
         setContentView(R.layout.activity_survey);
 
         Intent intent = getIntent();
-        id = "918fall";//intent.getExtras().getString("id");
-        name = "khj";//intent.getExtras().getString("name");
+        id = "918fall";
+        name = "khj";
         view = null;
         count = 0;
 
@@ -126,7 +127,7 @@ public class Survey extends AppCompatActivity {
                 survey2_2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        intimacy[count[0]] = "평소 알고 지내지 않았던 인물";
+                        intimacy[count[0]] = "평소알고지내지않았던인물";
                         count[0]++;
                         survey2_2.setEnabled(false);
                     }
@@ -150,7 +151,7 @@ public class Survey extends AppCompatActivity {
                 survey2_5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        intimacy[count[0]] = "혼자 있는게 좋음";
+                        intimacy[count[0]] = "혼자있는게좋음";
                         count[0]++;
                         survey2_5.setEnabled(false);
                     }
@@ -163,8 +164,8 @@ public class Survey extends AppCompatActivity {
             case 3:
                 RadioButton radioButton1 = view.findViewById(R.id.survey3_1);
                 RadioButton radioButton2 = view.findViewById(R.id.survey3_2);
-                if(radioButton1.isChecked()) survey3 = "일을 처리할 때 성급하고 빠른 편이다";
-                if(radioButton2.isChecked()) survey3 = "일을 처리할 때 느린 편이다";
+                if(radioButton1.isChecked()) survey3 = "일을처리할때성급하고빠른편이다";
+                if(radioButton2.isChecked()) survey3 = "일을처리할때느린편이다";
                 view = inflater.inflate(R.layout.survey_4, frame, false) ;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -187,7 +188,7 @@ public class Survey extends AppCompatActivity {
                 survey4_2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        place[count4[0]] = "도서관, PC방 등의 취미생ㅇ활 공간";
+                        place[count4[0]] = "도서관,PC방등의취미생활공간";
                         count4[0]++;
                         survey4_2.setEnabled(false);
                     }
@@ -203,7 +204,7 @@ public class Survey extends AppCompatActivity {
                 survey4_4.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        place[count4[0]] = "집 혹은 기숙사";
+                        place[count4[0]] = "집혹은기숙사";
                         count4[0]++;
                         survey4_4.setEnabled(false);
                     }
@@ -211,7 +212,7 @@ public class Survey extends AppCompatActivity {
                 survey4_5.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        place[count4[0]] = "회사 혹은 학교";
+                        place[count4[0]] = "회사혹은학교";
                         count4[0]++;
                         survey4_5.setEnabled(false);
                     }
@@ -221,7 +222,7 @@ public class Survey extends AppCompatActivity {
                 survey_result[0] = "&base_happyness=" + happyness + "&base_sadness="+sadness + "&base_annoyed="+annoyed + "&base_depressed="+depressed;
                 survey_result[1] ="&first_intimacy=" + intimacy[0] + "&second_intimacy="+intimacy[1] + "&third_intimacy="+intimacy[2] + "&fourth_intimacy="+intimacy[3] + "&fifth_intimacy="+intimacy[4];
                 survey_result[2] ="&characteristic=" + survey3;
-                survey_result[3] = "&first_place=" + intimacy[0] + "&second_place="+intimacy[1] + "&third_place="+intimacy[2] + "&fourth_place="+intimacy[3] + "&fifth_place="+intimacy[4]+"";
+                survey_result[3] = "&first_place=" + place[0] + "&second_place="+place[1] + "&third_place="+place[2] + "&fourth_place="+place[3] + "&fifth_place="+place[4]+"";
                 view = inflater.inflate(R.layout.finish_survey, frame, false) ;
                 frame.removeAllViews();
                 buttonBefore.setVisibility(View.INVISIBLE);
@@ -244,14 +245,14 @@ public class Survey extends AppCompatActivity {
 class setSurveyDataJSON extends AsyncTask<String, Void, String> {
     private Context context;
     String te = null;
-    String id;
+    String id, name;
 
     public setSurveyDataJSON(Context con){
         this.context = con;
     }
     @Override
     protected String doInBackground(String... params) {
-        String name = params[2];
+        name = params[2];
         String survey1 = params[3];
         String survey2 = params[4];
         String survey3 = params[5];
@@ -315,7 +316,11 @@ class setSurveyDataJSON extends AsyncTask<String, Void, String> {
         super.onPostExecute(aVoid);
 
         if(te.equals("success")){
-            Toast.makeText(context, "설문을 종료합니다.", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "설문을 종료한다냥!", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(context, CategoryActivity.class);
+            intent.putExtra("id", id);
+            intent.putExtra("name",name);
+            context.startActivity(intent);
             ((Activity)context).finish();
         }else{
             Toast.makeText(context, "설문을 다시 해주세요.", Toast.LENGTH_LONG).show();

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    String[] text_set = {"m","b","u","m","u","m","b","b","u","m","u","m","b","u","m","b","u","m","b","b","u","m","b","b","b","b","b"};
+    String[] text_set = {"m","b","u","m","u","m","b","b","u","m","u","m","b","u","m","b","u","m","b","b","u","m","b","b","m","b","b","m","b","b"};
 
     // adapter에 들어갈 list 입니다.
     private ArrayList<ChatMessage> listData = new ArrayList<>();

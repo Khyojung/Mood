@@ -1,7 +1,9 @@
 package com.lemon.piece.dodamdodam.category.chat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
+import android.widget.Toast;
 
 import com.lemon.piece.dodamdodam.R;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 
 public class MessageActivity extends AppCompatActivity {
     private ChatMessageAdapter adapter;
@@ -32,13 +45,17 @@ public class MessageActivity extends AppCompatActivity {
     LinearLayout picker;
 
     String emotion = "기쁨";
+    String emotion_result;
 
     String first_answer, second_answer, third_answer, fourth_answer;
 
+    String[] first_preference, second_preference, third_preference, fourth_preference;
     String[] first = {"집 혹은 기숙사","회사 혹은 학교","음식점","카페","도서관, PC방 등의 취미 생활공간"};
     String[] second = {"혼자 있었어","친구랑 있었어","가족이랑 있었어","애인이랑 있었어","새로운 사람이랑 있었어"};
     String[] third = {"내가 가고 싶어서!","누가 불렀어!","꼭 가야만 하는 자리였어!"};
     String[] fourth = {"행복했어","안 좋은 사건이 생겼어..","생산적이었어!","생각 없어! 평화로워..zz"};
+
+    String[] music, message;
 
     NumberPicker message_picker;
 
@@ -59,10 +76,7 @@ public class MessageActivity extends AppCompatActivity {
         picker = findViewById(R.id.picker);
         message_picker = findViewById(R.id.message_picker);
 
-
         recyclerView = (RecyclerView) findViewById(R.id.chat_list);
-
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
@@ -80,6 +94,70 @@ public class MessageActivity extends AppCompatActivity {
         chatMandarin();
         chatMandarin();
 
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetFirstData getFirstData = new GetFirstData(MessageActivity.this);
+                getFirstData.execute("http://168.188.126.175/dodam/get_first_data.php", id);
+                while(true){
+                    if(getFirstData.te != null){
+                        first_preference = getFirstData.getData();
+                        happyness = Integer.parseInt(first_preference[0]);
+                        sadness = Integer.parseInt(first_preference[1]);
+                        annoyed = Integer.parseInt(first_preference[2]);
+                        depressed = Integer.parseInt(first_preference[3]);
+                        break;
+                    }
+                }
+
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetSecondData getSecondData = new GetSecondData(MessageActivity.this);
+                getSecondData.execute("http://168.188.126.175/dodam/get_second_data.php", id);
+                while(true){
+                    if(getSecondData.te != null){
+                        second_preference = getSecondData.getData();
+                        break;
+                    }
+                }
+
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetThridData getThridData = new GetThridData(MessageActivity.this);
+                getThridData.execute("http://168.188.126.175/dodam/get_third_data.php", id);
+                while(true){
+                    if(getThridData.te != null){
+                        third_preference = getThridData.getData();
+                        break;
+                    }
+                }
+
+            }
+        }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                GetFourthData getFourthData = new GetFourthData(MessageActivity.this);
+                getFourthData.execute("http://168.188.126.175/dodam/get_fourth_data.php", id);
+                while(true){
+                    if(getFourthData.te != null){
+                        fourth_preference = getFourthData.getData();
+                        break;
+                    }
+                }
+
+            }
+        }).start();
+
         button = findViewById(R.id.button_layout);
         button.setVisibility(View.VISIBLE);
 
@@ -89,7 +167,22 @@ public class MessageActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(count == 7){
-                    first_answer = first[message_picker.getValue()];;
+                    first_answer = first[message_picker.getValue()];
+                    String first_check = first_answer.replaceAll(" ","");
+                    if(first_check.equals(second_preference[0])){
+                        happyness=happyness+3;
+                    }else if(first_check.equals(second_preference[1])){
+                        happyness=happyness+2;
+                    }else if(first_check.equals(second_preference[2])){
+                        happyness=happyness+1;
+                    }else if(first_check.equals(second_preference[3])){
+                        sadness=sadness+1;
+                        depressed=depressed+1;
+                    }else{
+                        sadness=sadness+1;
+                        annoyed=annoyed+3;
+                        depressed=depressed+2;
+                    }
                     String temp = first[message_picker.getValue()];
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
@@ -103,6 +196,26 @@ public class MessageActivity extends AppCompatActivity {
                 }
                 if(count == 10){
                     second_answer = second[message_picker.getValue()];
+                    String second_check;
+                    if(second_answer.equals("혼자 있었어")) second_check = "혼자있는게좋음";
+                    else if(second_answer.equals("친구랑 있었어")) second_check = "친구";
+                    else if(second_answer.equals("가족이랑 있었어")) second_check = "가족";
+                    else if(second_answer.equals("애인이랑 있었어")) second_check = "애인";
+                    else second_check = "평소알고지내지않았던인물";
+                    if(second_check.equals(fourth_preference[0])){
+                        happyness=happyness+3;
+                    }else if(second_check.equals(fourth_preference[1])){
+                        happyness=happyness+2;
+                    }else if(second_check.equals(fourth_preference[2])){
+                        happyness=happyness+1;
+                    }else if(second_check.equals(fourth_preference[3])){
+                        sadness=sadness+1;
+                        depressed=depressed+1;
+                    }else{
+                        sadness=sadness+1;
+                        annoyed=annoyed+3;
+                        depressed=depressed+2;
+                    }
                     String temp = second[message_picker.getValue()];
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
@@ -116,6 +229,20 @@ public class MessageActivity extends AppCompatActivity {
                 }
                 if(count == 12){
                     third_answer = third[message_picker.getValue()];
+
+                    if(third_answer.equals("내가 가고 싶어서!")){
+                        happyness=happyness+1;
+                    }
+                    else if(third_answer.equals("누가 불렀어")){
+                        if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
+                            happyness=happyness+1;
+                        }else{
+                            sadness=sadness+1;
+                        }
+                    }
+                    else if(third_answer.equals("꼭 가야만 하는 자리였어!")){
+                        annoyed=annoyed+1;
+                    }
                     String temp = third[message_picker.getValue()];
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
@@ -129,6 +256,28 @@ public class MessageActivity extends AppCompatActivity {
                 }
                 if(count == 15){
                     fourth_answer = fourth[message_picker.getValue()];
+                    if(fourth_answer.equals("행복했어")){
+                        happyness=happyness+2;
+                    }
+                    else if(fourth_answer.equals("안 좋은 사건이 생겼어..")){
+                        sadness=sadness+1;
+                        annoyed=annoyed+1;
+                        depressed=depressed+1;
+                    }
+                    else if(fourth_answer.equals("생산적이었어!")){
+                        if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
+                            happyness=happyness+1;
+                        }else{
+                            depressed=depressed+1;
+                        }
+                    }
+                    else if(fourth_answer.equals("생각없음 평화로워..ZZ")){
+                        if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
+                            annoyed=annoyed+1;
+                        }else{
+                            happyness=happyness+1;
+                        }
+                    }
                     String temp = fourth[message_picker.getValue()]; // 안좋은 일이 있었다고 하면 물어봐야함
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
@@ -173,6 +322,29 @@ public class MessageActivity extends AppCompatActivity {
                     mandarin_handler.postDelayed(mandarin_runnable, 3000);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
+                if(count == 19){ // 노래
+                    GetMusicData getMusicData = new GetMusicData(MessageActivity.this);
+                    getMusicData.execute("http://168.188.126.175/dodam/get_music_data.php", emotion_result);
+                    while(true){
+                        if(getMusicData.te != null){
+                            music = getMusicData.getData();
+                            break;
+                        }
+                    }
+                    int ran = ((int)Math.random()*10);
+                    ChatMessage chatMessage = new ChatMessage(side, music[ran]);
+                    adapter.addItem(chatMessage);
+                    button.setVisibility(View.INVISIBLE);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                    count = 30;
+                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                }
+                if(count == 40){
+                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
+                    finish();
+                }
 
             }
         });
@@ -202,6 +374,29 @@ public class MessageActivity extends AppCompatActivity {
                     mandarin_handler.postDelayed(mandarin_runnable, 3000);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
 
+                }
+                if(count == 19){ //명언
+                    GetMessageData getMessageData = new GetMessageData(MessageActivity.this);
+                    getMessageData.execute("http://168.188.126.175/dodam/get_message_data.php", emotion_result);
+                    while(true){
+                        if(getMessageData.te != null){
+                            message = getMessageData.getData();
+                            break;
+                        }
+                    }
+                    int ran = ((int)Math.random()*10);
+                    ChatMessage chatMessage = new ChatMessage(side, message[ran]);
+                    adapter.addItem(chatMessage);
+                    button.setVisibility(View.INVISIBLE);
+                    recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
+                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
+                    count = 31;
+                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                }
+                if(count == 40){
+                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
+                    finish();
                 }
 
 
@@ -320,6 +515,25 @@ public class MessageActivity extends AppCompatActivity {
             count=count+1;
 
         }else if(count == 17){
+            int[] temp = {happyness, sadness, annoyed, depressed};
+            Arrays.sort(temp);
+            if(temp[3] == happyness){
+                emotion = "행복";
+                emotion_result = "happyness";
+            }
+            else if(temp[3] == sadness){
+                emotion = "슬픔";
+                emotion_result = "sadness";
+            }
+            else if(temp[3] == annoyed) {
+                emotion = "짜증";
+                emotion_result = "annoyed";
+            }
+            else if(temp[3] == depressed){
+                emotion = "우울";
+                emotion_result = "depressed";
+            }
+
             ChatMessage chatMessage = new ChatMessage(side, "오늘 너의 하루는 "+emotion+"인 것 같다냥..!");
             adapter.addItem(chatMessage);
             count=count+1;
@@ -333,8 +547,25 @@ public class MessageActivity extends AppCompatActivity {
             adapter.addItem(chatMessage);
             button.setVisibility(View.VISIBLE);
             yes.setText("명언");
-            no.setText("시");
-            count=count+1;
+            no.setText("노래");
+            //count=count+1;
+        }else if(count == 30){
+
+            //노래
+            ChatMessage chatMessage = new ChatMessage(side, "지금 기분에 듣기 좋은 노래다냥! \n 벌써 대화가 다 끝났다냥..\n 그래도 내가 보고싶으면 언제든 다시 와라냥!");
+            adapter.addItem(chatMessage);
+            button.setVisibility(View.VISIBLE);
+            yes.setText("또올께 만다린!");
+            no.setText("생각좀 해보고..");
+            count = 40;
+        }else if(count == 31){
+            //명언
+            ChatMessage chatMessage = new ChatMessage(side, "지금 기분에 읽기 좋은 명언이다냥! \n 벌써 대화가 다 끝났다냥..\n 그래도 내가 보고싶으면 언제든 다시 와라냥!");
+            adapter.addItem(chatMessage);
+            button.setVisibility(View.VISIBLE);
+            yes.setText("또올께 만다린!");
+            no.setText("생각좀 해보고..");
+            count = 40;
         }else{
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest" + count), "string", getPackageName())));
             adapter.addItem(chatMessage);
@@ -351,6 +582,430 @@ public class MessageActivity extends AppCompatActivity {
         Log.i("test", "onDstory()");
         mandarin_handler.removeCallbacks(mandarin_runnable);
         super.onDestroy();
+    }
+
+}
+class GetFirstData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String id = null;
+    Boolean re = false;
+
+    public GetFirstData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        String param = "ID=" + id+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("first_preference", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+
+class GetSecondData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String id = null;
+    Boolean re = false;
+
+    public GetSecondData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        String param = "ID=" + id+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("first_preference", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+
+class GetThridData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String id = null;
+    Boolean re = false;
+
+    public GetThridData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        String param = "ID=" + id+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("first_preference", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+
+class GetFourthData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String id = null;
+    Boolean re = false;
+
+    public GetFourthData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        String param = "ID=" + id+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("first_preference", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+
+class GetMessageData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String category = null;
+    Boolean re = false;
+
+    public GetMessageData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        category = params[1];
+        String param = "FS_category=" + category+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("message", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
+    }
+
+}
+class GetMusicData extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te[] = null;
+    String category = null;
+    Boolean re = false;
+
+    public GetMusicData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        category = params[1];
+        String param = "MUSIC_category=" + category+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString().split(",");
+            Log.e("music", sb.toString());
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+
+    public String[] getData(){
+        return this.te;
     }
 
 }

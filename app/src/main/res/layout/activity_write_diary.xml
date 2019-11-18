@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/diary_background"
+    android:background="@drawable/background_diary"
     tools:context="com.lemon.piece.dodamdodam.category.diary.WriteDiaryActivity">
 
     <LinearLayout

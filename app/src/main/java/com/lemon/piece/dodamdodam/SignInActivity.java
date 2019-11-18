@@ -225,6 +225,7 @@ class GetID extends AsyncTask<String, Void, String> {
 
         if(db.equals("error")){ //db안에 아이디가 없을 경우
 
+            Toast.makeText(context, "설문조사가 필요하다냥!", Toast.LENGTH_LONG);
             Intent intent = new Intent(context, Survey.class);
             intent.putExtra("id",id);
             intent.putExtra("id",name);

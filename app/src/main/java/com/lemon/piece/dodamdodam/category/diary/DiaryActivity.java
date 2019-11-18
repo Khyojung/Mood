@@ -47,6 +47,8 @@ public class DiaryActivity extends AppCompatActivity {
                     RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DiaryActivity.this);
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
                     recyclerView.setLayoutManager(linearLayoutManager);
 
                     adapter = new DiaryAdapter();
