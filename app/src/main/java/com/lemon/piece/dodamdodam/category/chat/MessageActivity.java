@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -100,12 +101,40 @@ public class MessageActivity extends AppCompatActivity {
                 chatMandarin();
             }
         };
-
+        chatMandarin();
         day = this.getDayofWeek();
         TextView textView = findViewById(R.id.message_day);
         textView.setText(this.getDay());
-        chatMandarin();
-        mandarin_handler.postDelayed(mandarin_runnable, 2000);
+        button = findViewById(R.id.button_layout);
+        final int[] han_count = {0};
+
+        final Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg){
+                String first = msg.getData().getString("first");
+                String second = msg.getData().getString("second");
+                String third = msg.getData().getString("third");
+                String fourth = msg.getData().getString("fourth");
+                String han = msg.getData().getString("han");
+                if(first != null){
+                    han_count[0]++;
+                }
+                if(second != null){
+                    han_count[0]++;
+                }
+                if(third != null){
+                    han_count[0]++;
+                }
+                if(fourth != null){
+                    han_count[0]++;
+                }
+                if(han_count[0] == 4){
+
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+
+                }
+            }
+        };
 
         new Thread(new Runnable() {
             @Override
@@ -114,11 +143,18 @@ public class MessageActivity extends AppCompatActivity {
                 getFirstData.execute("http://168.188.126.175/dodam/get_first_data.php", id);
                 while(true){
                     if(getFirstData.te != null){
+
                         first_preference = getFirstData.getData();
                         happyness = Integer.parseInt(first_preference[0]);
                         sadness = Integer.parseInt(first_preference[1]);
                         annoyed = Integer.parseInt(first_preference[2]);
                         depressed = Integer.parseInt(first_preference[3]);
+
+                        Message message = handler.obtainMessage();
+                        Bundle data = new Bundle();
+                        data.putString("first","first");
+                        message.setData(data);
+                        handler.sendMessage(message);
                         break;
                     }
                 }
@@ -134,6 +170,11 @@ public class MessageActivity extends AppCompatActivity {
                 while(true){
                     if(getSecondData.te != null){
                         second_preference = getSecondData.getData();
+                        Message message = handler.obtainMessage();
+                        Bundle data = new Bundle();
+                        data.putString("second","second");
+                        message.setData(data);
+                        handler.sendMessage(message);
                         break;
                     }
                 }
@@ -149,6 +190,11 @@ public class MessageActivity extends AppCompatActivity {
                 while(true){
                     if(getThridData.te != null){
                         third_preference = getThridData.getData();
+                        Message message = handler.obtainMessage();
+                        Bundle data = new Bundle();
+                        data.putString("third","third");
+                        message.setData(data);
+                        handler.sendMessage(message);
                         break;
                     }
                 }
@@ -164,6 +210,11 @@ public class MessageActivity extends AppCompatActivity {
                 while(true){
                     if(getFourthData.te != null){
                         fourth_preference = getFourthData.getData();
+                        Message message = handler.obtainMessage();
+                        Bundle data = new Bundle();
+                        data.putString("fourth","fourth");
+                        message.setData(data);
+                        handler.sendMessage(message);
                         break;
                     }
                 }
@@ -171,8 +222,7 @@ public class MessageActivity extends AppCompatActivity {
             }
         }).start();
 
-        button = findViewById(R.id.button_layout);
-        button.setVisibility(View.VISIBLE);
+
 
         third_layout = findViewById(R.id.third_layout);
 
@@ -181,7 +231,9 @@ public class MessageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                picker.setVisibility(View.INVISIBLE);
                 if(count == 7){
+
                     first_answer = first[message_picker.getValue()];
                     String first_check = first_answer.replaceAll(" ","");
                     if(first_check.equals(second_preference[0])){
@@ -204,12 +256,13 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
 
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    //mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    //mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
 
                 }
                 if(count == 10){
+                    third_layout.setVisibility(View.INVISIBLE);
                     second_answer = second[message_picker.getValue()];
                     String second_check;
                     if(second_answer.equals("혼자 있었어")) second_check = "혼자있는게좋음";
@@ -219,59 +272,85 @@ public class MessageActivity extends AppCompatActivity {
                     else second_check = "평소알고지내지않았던인물";
                     if(second_check.equals(fourth_preference[0])){
                         happyness=happyness+3;
+                        sadness=sadness-2;
+                        annoyed=annoyed-2;
+                        depressed=depressed-1;
                     }else if(second_check.equals(fourth_preference[1])){
                         happyness=happyness+2;
+                        sadness=sadness-1;
+                        annoyed=annoyed-1;
+                        depressed=depressed-1;
                     }else if(second_check.equals(fourth_preference[2])){
                         happyness=happyness+1;
                     }else if(second_check.equals(fourth_preference[3])){
+                        happyness=happyness-2;
                         sadness=sadness+1;
                         depressed=depressed+1;
                     }else{
-                        sadness=sadness+1;
+                        happyness=happyness-3;
+                        sadness=sadness+2;
                         annoyed=annoyed+3;
                         depressed=depressed+2;
                     }
+
                     String temp = second[message_picker.getValue()];
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
 
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    //mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    //mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
                 if(count == 15){
                     fourth_answer = fourth[message_picker.getValue()];
                     if(fourth_answer.equals("행복했어")){
-                        happyness=happyness+2;
+                        happyness=happyness+3;
+                        sadness=sadness-2;
+                        annoyed=annoyed-3;
+                        depressed=depressed-1;
                     }
                     else if(fourth_answer.equals("안 좋은 사건이 생겼어..")){
-                        sadness=sadness+1;
-                        annoyed=annoyed+1;
-                        depressed=depressed+1;
+                        happyness=happyness-3;
+                        sadness=sadness+3;
+                        annoyed=annoyed+2;
+                        depressed=depressed+2;
                     }
                     else if(fourth_answer.equals("생산적이었어!")){
                         if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
-                            happyness=happyness+1;
+                            happyness=happyness+2;
+                            sadness=sadness-1;
+                            annoyed=annoyed-1;
+                            depressed=depressed-2;
                         }else{
-                            depressed=depressed+1;
+                            happyness=happyness-2;
+                            sadness=sadness+1;
+                            annoyed=annoyed+1;
+                            depressed=depressed+2;
                         }
                     }
                     else if(fourth_answer.equals("생각없음 평화로워..ZZ")){
                         if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
-                            annoyed=annoyed+1;
+                            happyness=happyness-2;
+                            sadness=sadness+1;
+                            annoyed=annoyed+2;
+                            depressed=depressed+1;
                         }else{
-                            happyness=happyness+1;
+                            happyness=happyness+2;
+                            sadness=sadness-1;
+                            annoyed=annoyed-1;
+                            depressed=depressed-1;
                         }
                     }
+
                     String temp = fourth[message_picker.getValue()]; // 안좋은 일이 있었다고 하면 물어봐야함
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
 
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
@@ -283,6 +362,7 @@ public class MessageActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
+                button.setVisibility(View.INVISIBLE);
                 if(count == 2){
                     String temp = "아니";
                     mandarin_chat = false;
@@ -291,7 +371,7 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
 
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
                 if(count == 3 || count == 4){
@@ -301,10 +381,10 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 6000);
+                    button.setVisibility(View.INVISIBLE);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 4500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
                 if(count == 19){ // 노래
@@ -324,13 +404,14 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                     count = 30;
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
                 }
                 if(count == 40){
+                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
                     SetTotalData setTotalData = new SetTotalData(MessageActivity.this);
                     setTotalData.execute("http://168.188.126.175/dodam/set_total_data.php", id, emotion_result, String.valueOf(total_size), String.valueOf(happyness), String.valueOf(sadness), String.valueOf(annoyed), String.valueOf(depressed), day);
-                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
-                    finish();
+
+
                 }
 
             }
@@ -338,6 +419,7 @@ public class MessageActivity extends AppCompatActivity {
         yes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                button.setVisibility(View.INVISIBLE);
                 if(count == 2){
                     String temp = "응";
                     mandarin_chat = true;
@@ -346,7 +428,8 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
 
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    button.setVisibility(View.INVISIBLE);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
                 if(count == 3 || count == 4){
@@ -356,9 +439,10 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 6000);
+                    button.setVisibility(View.INVISIBLE);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 4500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
 
                 }
@@ -379,13 +463,14 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.notifyDataSetChanged();
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                     count = 31;
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
                 }
                 if(count == 40){
+                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
                     SetTotalData setTotalData = new SetTotalData(MessageActivity.this);
                     setTotalData.execute("http://168.188.126.175/dodam/set_total_data.php", id, emotion_result, String.valueOf(total_size), String.valueOf(happyness), String.valueOf(sadness), String.valueOf(annoyed), String.valueOf(depressed), day);
-                    Toast.makeText(MessageActivity.this, "다음에 또만나자냥!", Toast.LENGTH_LONG);
-                    finish();
+
+
                 }
 
 
@@ -398,20 +483,21 @@ public class MessageActivity extends AppCompatActivity {
         chatText.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    chatText.setVisibility(View.INVISIBLE);
                     String temp = chatText.getText().toString();
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
 
                     if(count == 8){
-                        mandarin_handler.postDelayed(mandarin_runnable, 4000);
+                        mandarin_handler.postDelayed(mandarin_runnable, 3000);
                     }
                     if(count == 16){
-                        mandarin_handler.postDelayed(mandarin_runnable, 4000);
+                        mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                        mandarin_handler.postDelayed(mandarin_runnable, 4500);
                         mandarin_handler.postDelayed(mandarin_runnable, 6000);
-                        mandarin_handler.postDelayed(mandarin_runnable, 8000);
                     }
                     chatText.setText("");
                     side = !side;
@@ -430,31 +516,44 @@ public class MessageActivity extends AppCompatActivity {
         third_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                third_layout.setVisibility(View.INVISIBLE);
                 if(count == 12){
                     third_answer = "내가 가고 싶어서!";
 
                     if(third_answer.equals("내가 가고 싶어서!")){
-                        happyness=happyness+1;
+                        happyness=happyness+2;
+                        sadness=sadness-2;
+                        annoyed=annoyed-1;
                     }
                     else if(third_answer.equals("누가 불렀어")){
                         if(third_preference[0].equals("일을처리할때성급하고빠른편이다")){
-                            happyness=happyness+1;
+                            happyness=happyness+2;
+                            sadness=sadness-1;
+                            annoyed=annoyed-2;
+                            depressed=depressed-2;
                         }else{
-                            sadness=sadness+1;
+                            happyness=happyness-1;
+                            sadness=sadness+2;
+                            annoyed=annoyed+1;
+                            depressed=depressed+1;
                         }
                     }
                     else if(third_answer.equals("꼭 가야만 하는 자리였어!")){
-                        annoyed=annoyed+1;
+                        happyness=happyness-2;
+                        sadness=sadness+2;
+                        annoyed=annoyed+3;
+                        depressed=depressed+2;
                     }
+
                     String temp = third_answer;
                     ChatMessage chatMessage = new ChatMessage(side, temp);
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 6000);
-                    //mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 4500);
+                    //mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
             }
@@ -462,6 +561,7 @@ public class MessageActivity extends AppCompatActivity {
         third_2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                third_layout.setVisibility(View.INVISIBLE);
                 if(count == 12){
                     third_answer = "누가 불렀어";
 
@@ -483,10 +583,10 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 6000);
-                    //mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 4500);
+                    //mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
             }
@@ -494,6 +594,7 @@ public class MessageActivity extends AppCompatActivity {
         third_3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                third_layout.setVisibility(View.INVISIBLE);
                 if(count == 12){
                     third_answer = "꼭 가야만 하는 자리였어!";
 
@@ -515,10 +616,10 @@ public class MessageActivity extends AppCompatActivity {
                     adapter.addItem(chatMessage);
                     adapter.notifyDataSetChanged();
                     recyclerView.setAdapter(adapter);
-                    mandarin_handler.postDelayed(mandarin_runnable, 2000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 4000);
-                    mandarin_handler.postDelayed(mandarin_runnable, 6000);
-                    //mandarin_handler.postDelayed(mandarin_runnable, 2000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
+                    mandarin_handler.postDelayed(mandarin_runnable, 3000);
+                    mandarin_handler.postDelayed(mandarin_runnable, 4500);
+                    //mandarin_handler.postDelayed(mandarin_runnable, 1500);
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
             }
@@ -564,15 +665,23 @@ public class MessageActivity extends AppCompatActivity {
     }
     public void chatMandarin(){
         //Message message = mandarin_handler.obtainMessage();
-        if(count == 2 && mandarin_chat == true){
+        if(count == 1){
+            ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest" + count), "string", getPackageName())));
+            adapter.addItem(chatMessage);
+
+            count=count+1;
+            button.setVisibility(View.VISIBLE);
+        }else if(count == 2 && mandarin_chat == true){
             //응이라고 대답했을때
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest2"), "string", getPackageName())));
             adapter.addItem(chatMessage);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
             count=4;
+
             yes.setText("그게뭔데?");
             no.setText("멘탈관리자?");
+            button.setVisibility(View.VISIBLE);
         }else if(count == 2 && mandarin_chat == false) {
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest3"), "string", getPackageName())));
             adapter.addItem(chatMessage);
@@ -581,6 +690,7 @@ public class MessageActivity extends AppCompatActivity {
             count = 4;
             yes.setText("그게뭔데?");
             no.setText("멘탈관리자?");
+            button.setVisibility(View.VISIBLE);
         }else if(count == 4 || count == 5 || count == 6){
             button.setVisibility(View.INVISIBLE);
             ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier(("quest" + count), "string", getPackageName())));
@@ -724,6 +834,7 @@ public class MessageActivity extends AppCompatActivity {
     }
 
 }
+
 class GetFirstData extends AsyncTask<String, Void, String> {
     private Context context;
     String te[] = null;
@@ -1218,6 +1329,12 @@ class SetTotalData extends AsyncTask<String, Void, String> {
         }
 
         return null;
+
+
+    }
+    @Override
+    protected void onPostExecute(String result) {
+        ((Activity)context).finish();
 
 
     }
