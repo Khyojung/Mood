@@ -20,6 +20,95 @@
     <string name="quest16">니가 좋으면 나도 좋고 니가 슬프면 나도 슬프다냥,,</string>
     <string name="title_activity_navigation">NavigationActivity</string>
 
+    <string name="happyness_fs0">나는 나를 웃게 하는 사람들을 사랑한다. 솔직히 내가 가장 좋아하는 것은 웃는 것이다. 웃음은 수많은 질병들을 치료해준다. 웃음은 아마도 사람에게 가장 중요한 것일 것이다.\n - 오드리 햅번 -</string>
+    <string name="happyness_fs1">누군가의 인생에 근본적인 변화를 일으키는 것보다 큰 기쁨이나 보상은 없다.\n - 매리 로즈 맥게디 -</string>
+    <string name="happyness_fs2">대부분의 사람은 마음먹은 만큼 행복하다.\n - 에이브러햄 링컨 -</string>
+    <string name="happyness_fs3">모자라는 부분을 채워가는 것이 행복이다.\n - 로버트 프로스트 -</string>
+    <string name="happyness_fs4">미래를 좌지우지하겠다는 욕망을 버리면 더 행복해질 수 있다.\n - 니콜 키드먼 -</string>
+    <string name="happyness_fs5">우리는 평화를 찾을 것이다. 천사의 소리를 들을 것이며, 다이아몬드로 빛나는 하늘을 볼 것이다.\n - 안톤 체홉 -</string>
+    <string name="happyness_fs6">웃음은 강장제이고, 안정제이며, 진통제이다.\n - 찰리 채플린 -</string>
+    <string name="happyness_fs7">평화를 원한다면, 싸움을 멈춰라. 마음의 평화를 원한다면, 자신의 생각과의 싸움을 그치라.\n - 피터 맥윌리엄스 -</string>
+    <string name="happyness_fs8">행복: 두둑한 통장, 훌륭한 요리사, 그리고 소화력.\n - 장 자크 루소 -</string>
+    <string name="happyness_fs9">헌법이 사람들에게 보장할 수 있는 유일한 것은 행복을 추구할 권리이다. 당신은 스스로 행복을 잡아야 한다.\n - 벤자민 프랭클린 -</string>
+
+    <string name="depressed_fs0">내가 좋아하거나 존경하는 사람들의 공통 분모는 찾을 수 없지만, 내가 사랑하는 사람들의 공통된 특징은 찾을 수 있다. 그들은 나를 웃게 만든다.\n - 오든 -</string>
+    <string name="depressed_fs1">당신 그대로의 모습으로 미움받는 것이 당신답지 못한 모습으로 사랑받는 것보다 낫다.\n - 앙드레 지드 -</string>
+    <string name="depressed_fs2">때로는 살아있는 것조차도 용기가 필요할 때가 있다.\n - 세네카 -</string>
+    <string name="depressed_fs3">모든 역경 중에서 가장 딱한 불행은 지금까지 행복했었다는 것이다.\n -보에티우스-</string>
+    <string name="depressed_fs4">변화는 간단한 일에서부터 시작된다.\n - 앤서니 라빈스 -</string>
+    <string name="depressed_fs5">사람의 운수는 아무리 다르게 보일지라도 행복과 불행이 서로 뒤섞여서 결국은 평등하게 된다.\n - 라 로슈푸코 -</string>
+    <string name="depressed_fs6">얼굴이 계속 햇빛을 향하도록 하라. 그러면 당신의 그림자를 볼 수 없다.\n - 헬렌 켈러 -</string>
+    <string name="depressed_fs7">절대 어제를 후회하지 마라. 인생은 오늘의 내 안에 있고, 내일은 스스로 만드는 것이다.\n - L.론 허버드-</string>
+    <string name="depressed_fs8">하루에 3시간을 걸으면 7년 후에 지구를 한바퀴 돌 수 있다.\n -사무엘 존슨-</string>
+    <string name="depressed_fs9">한번의 실패와 영원한 실패를 혼동하지 마라.\n  -F.스콧 핏제랄드-</string>
+
+    <string name="annoyed_fs0">가장 현명한 사람은 자신만의 방향을 따른다.\n - 에우리피데스 -</string>
+    <string name="annoyed_fs1">결국 모든 것은 우스개다.\n - 찰리 채플린 -</string>
+    <string name="annoyed_fs2">꿈은 이루어진다. 이루어질 가능성이 없었다면 애초에 자연이 우리를 꿈꾸게 하지도 않았을 것이다.\n - 존 업다이크 -</string>
+    <string name="annoyed_fs3">노인이 젊은이에게 얘기하듯이 망자도 산자에게 이야기하려고 노력한다면 좋을텐데.\n - 윌라 카서 -</string>
+    <string name="annoyed_fs4">산다는것 그것은 치열한 전투이다.\n  -로망 로랑-</string>
+    <string name="annoyed_fs5">삶의 핵심은, 그것도 긍정주의자로 사는 삶의 핵심은 아직 최상의 미래가 도래하지 않았다고 믿을 정도로 순진해지는 것이다.\n - 해브록 엘리스 -</string>
+    <string name="annoyed_fs6">생각은 자유다.\n - 윌리엄 셰익스피어 -</string>
+    <string name="annoyed_fs7">약간의 광기도 없는 위대한 천재란 있을 수 없다.\n -아리스토텔레스 -</string>
+    <string name="annoyed_fs8">우리가 이룬 것만큼, 이루지 못한 것도 자랑스럽습니다.\n - 스티브 잡스 -</string>
+    <string name="annoyed_fs9">인간이 현명해지는 것은 경험에 의한 것이 아니라, 경험에 대처하는 능력 때문이다.\n - 데카르트 -</string>
+
+    <string name="sadness_fs0">가장 애통이 적은 자가 가장 소란스럽게 비판한다.\n -타키루스-</string>
+    <string name="sadness_fs1">모든 인간에게 공통되는 온갖 화(禍) 중에서 가장 큰 것은 슬픔이다.\n - 메난드로스 -</string>
+    <string name="sadness_fs2">슬픔에는 두 가지 종류가 있다는 것을 깨달았다. 그 하나는 덜 수 있는 슬픔이고, 또 하나는 덜 수 없는 슬픔이다.\n -펄벅-</string>
+    <string name="sadness_fs3">슬픔은 남에게 터놓고 이야기함으로써 완전히 가시지는 않을망정 누그러질 수는 있다.\n - 칼데론 -</string>
+    <string name="sadness_fs4">슬픔은 오해된 즐거움인지도 모른다.\n -브라우닝-</string>
+    <string name="sadness_fs5">슬픔은 지식이다. 많이 아는 자는 무서운 진실을 깊이 한탄하지 않는다. 지식의 나무는 생명의 나무가 아니므로.\n -파스칼-</string>
+    <string name="sadness_fs6">슬픔은 한결같은 사람에게 흔들림을 가르쳐준다.\n - 소포클레스 -</string>
+    <string name="sadness_fs7">슬픔이야말로 인생과 예술, 양자 간에 있어서의 궁극적인 전형인 것이다.\n -와일드-</string>
+    <string name="sadness_fs8">우유부단에는 슬픔이 없다.\n -시세로-</string>
+    <string name="sadness_fs9">참된 슬픔은 고통의 지팡이다.\n - 아이스퀼로스 -</string>
+
+    <string name="happyness_music0">DUGGY - Brilliant World</string>
+    <string name="happyness_music1">DUGGY - Fall in U</string>
+    <string name="happyness_music2">DUGGY - 그 때 그 날들</string>
+    <string name="happyness_music3">DUGGY - 너와 하늘</string>
+    <string name="happyness_music4">DUGGY - 달빛의 꽃</string>
+    <string name="happyness_music5">Tido Kang - 눈이 오면</string>
+    <string name="happyness_music6">Tido Kang - 문득 (Suddenly)</string>
+    <string name="happyness_music7">Tido Kang - 병아리 왈츠</string>
+    <string name="happyness_music8">Tido Kang - 새학기 (New Semester)</string>
+    <string name="happyness_music9">Tido Kang - 아기펭귄 (Baby Penguin)</string>
+
+    <string name="depressed_music0">바람의나라 - 천인마을</string>
+    <string name="depressed_music1">Tido Kang - 필연 [必然] (Inevitability)</string>
+    <string name="depressed_music2">Tido Kang - 전생 (Previous Life)</string>
+    <string name="depressed_music3">Tido Kang - 별에서 보내는 메세지 (A Message From Star)</string>
+    <string name="depressed_music4">Neal K - 허상</string>
+    <string name="depressed_music5">Neal K - Fairy</string>
+    <string name="depressed_music6">Luxatic - Dance with Star</string>
+    <string name="depressed_music7">Hamauzu Masashi - Battlefield V</string>
+    <string name="depressed_music8">Fatestay night - Pride of the King of Knights</string>
+    <string name="depressed_music9">Elements Garden - 부러진 도표</string>
+
+    <string name="annoyed_music0">테트리스 - 메인 테마</string>
+    <string name="annoyed_music1">테일즈위버 - Reminiscence</string>
+    <string name="annoyed_music2">클래시 로얄 - 메인 테마</string>
+    <string name="annoyed_music3">오버워치 - 최고의 플레이어 테마</string>
+    <string name="annoyed_music4">언더테일 - 메갈로바니아</string>
+    <string name="annoyed_music5">슈퍼마리오 - 메인 테마</string>
+    <string name="annoyed_music6">브롤스타즈 - 쇼다운</string>
+    <string name="annoyed_music7">배틀그라운드 - 메인 테마</string>
+    <string name="annoyed_music8">메이플스토리 - Raindrop Flower</string>
+    <string name="annoyed_music9">로스트아크 - 별빛 등대의 섬</string>
+
+    <string name="sadness_music0">김종천, 최철호 - 비익련리</string>
+    <string name="sadness_music1">김준석, 정세린 - 연심</string>
+    <string name="sadness_music2">두번째 달 - 얼음 연못</string>
+    <string name="sadness_music3">배보람, 허상은 - Appassionata</string>
+    <string name="sadness_music4">이지용, 이유희 - 아련한 기다림에</string>
+    <string name="sadness_music5">전창엽 - 월하정인</string>
+    <string name="sadness_music6">정세린 - 상사일념</string>
+    <string name="sadness_music7">정세린 - 애지애가</string>
+    <string name="sadness_music8">정세린 - 은월각</string>
+    <string name="sadness_music9">진명용 - 울다가 웃다가</string>
+
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 

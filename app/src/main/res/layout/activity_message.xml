@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <ImageView
+        android:layout_marginTop="5dp"
         android:background="@drawable/logo"
         android:layout_centerHorizontal="true"
         android:layout_width="194dp"
@@ -23,6 +24,7 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:fontFamily="@font/font"
         android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/message_day"

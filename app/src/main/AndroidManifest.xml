@@ -8,26 +8,21 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_heart"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_heart_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
             android:name=".category.chat.MessageActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
+            android:screenOrientation="portrait"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".category.GraphActivity">
-
-        </activity>
+        <activity android:name=".category.GraphActivity"></activity>
         <activity android:name=".category.CommunityActivity" />
-        <activity android:name=".category.diary.DiaryActivity">
-
-        </activity>
+        <activity android:name=".category.diary.DiaryActivity"></activity>
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
@@ -41,12 +36,10 @@
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".WriteCommunityActivity"></activity>
-        <activity android:name=".category.diary.WriteDiaryActivity"></activity>
-        <activity android:name=".default_user.Survey">
-
-
-        </activity>
+        <activity android:name=".WriteCommunityActivity" />
+        <activity android:name=".category.diary.WriteDiaryActivity" />
+        <activity android:name=".default_user.Survey"></activity>
+        <activity android:name=".MiddleActivity"></activity>
     </application>
 
 </manifest>

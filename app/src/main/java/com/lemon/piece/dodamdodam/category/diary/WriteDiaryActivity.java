@@ -69,8 +69,14 @@ public class WriteDiaryActivity extends AppCompatActivity {
                         }
                     }
                 });
-                title = diary_name.getText().toString();
-                write = diary_write.getText().toString();
+                if(diary_name.getText().toString()!=""){
+                    title = diary_name.getText().toString();
+                }
+                if(diary_write.getText().toString() !=""){
+                    write = diary_write.getText().toString();
+                }
+
+
                 WriteDiaryData task = new WriteDiaryData(WriteDiaryActivity.this);
                 task.execute("http://168.188.126.175/dodam/diary.php", id, name, title, write, save_day);
                 // 커스텀 다이얼로그를 호출한다.

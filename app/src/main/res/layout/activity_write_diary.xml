@@ -103,7 +103,7 @@
         </LinearLayout>
 
         <EditText
-            android:hint="제목"
+            android:hint="제목이다냥!"
             android:id="@+id/diary_name"
             android:fontFamily="@font/font"
             android:gravity="center"
@@ -130,7 +130,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:hint="내용을 써주세요"
+        android:hint="내용을 써달라냥!"
         android:id="@+id/diary_write"
         android:layout_width="match_parent"
         android:layout_height="387dp"

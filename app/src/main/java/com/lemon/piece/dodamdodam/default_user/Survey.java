@@ -241,7 +241,7 @@ public class Survey extends AppCompatActivity {
                 survey4_2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        place[count4[0]] = "도서관,PC방등의취미생활공간";
+                        place[count4[0]] = "도서관혹은PC방등의취미생활공간";
                         count4[0]++;
                         survey4_2.setEnabled(false);
                         if(count4[0] == 5){

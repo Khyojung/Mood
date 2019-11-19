@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -45,10 +44,9 @@ public class MessageActivity extends AppCompatActivity {
     int count = 0;
 
     int happyness = 5, sadness = 5, annoyed = 5, depressed = 5;
-    Handler mandarin_handler, userHandler;
-    Runnable mandarin_runnable, user_runnable;
+    Handler mandarin_handler, handler;
+    Runnable mandarin_runnable, runnable;
     boolean mandarin_chat = false;
-    Intent intent;
     private boolean side = false;
     LinearLayout picker;
 
@@ -58,7 +56,7 @@ public class MessageActivity extends AppCompatActivity {
     String first_answer, second_answer, third_answer, fourth_answer;
 
     String[] first_preference, second_preference, third_preference, fourth_preference;
-    String[] first = {"집 혹은 기숙사","회사 혹은 학교","음식점","카페","도서관, PC방 등의 취미 생활공간"};
+    String[] first = {"집 혹은 기숙사","회사 혹은 학교","음식점","카페","도서관 혹은 PC방 등의 취미 생활공간"};
     String[] second = {"혼자 있었어","친구랑 있었어","가족이랑 있었어","애인이랑 있었어","새로운 사람이랑 있었어"};
     String[] third = {"내가 가고 싶어서!","누가 불렀어!","꼭 가야만 하는 자리였어!"};
     String[] fourth = {"행복했어","안 좋은 사건이 생겼어..","생산적이었어!","생각 없어! 평화로워..zz"};
@@ -74,6 +72,9 @@ public class MessageActivity extends AppCompatActivity {
     String id, name;
     int total_size;
     String day;
+    int hand_count;
+    Boolean hand;
+    Handler important;
     @SuppressLint("HandlerLeak")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,14 @@ public class MessageActivity extends AppCompatActivity {
         Intent intent = getIntent();
         id = intent.getExtras().getString("id");
         name = intent.getExtras().getString("name");
+
+
+        first_preference = intent.getExtras().getStringArray("feels");
+        second_preference = intent.getExtras().getStringArray("fourth_preference");
+        third_preference = intent.getExtras().getStringArray("third");
+        fourth_preference = intent.getExtras().getStringArray("second_preference");
+
+
         setContentView(R.layout.activity_message);
 
         picker = findViewById(R.id.picker);
@@ -94,6 +103,7 @@ public class MessageActivity extends AppCompatActivity {
         adapter = new ChatMessageAdapter();
         recyclerView.setAdapter(adapter);
 
+        hand_count = 0;
         mandarin_handler = new Handler();
         mandarin_runnable = new Runnable() {
             @Override
@@ -102,133 +112,14 @@ public class MessageActivity extends AppCompatActivity {
             }
         };
         chatMandarin();
+        mandarin_handler.postDelayed(mandarin_runnable, 1500);
         day = this.getDayofWeek();
         TextView textView = findViewById(R.id.message_day);
         textView.setText(this.getDay());
         button = findViewById(R.id.button_layout);
-        final int[] han_count = {0};
-
-        final Handler handler = new Handler(){
-            @Override
-            public void handleMessage(Message msg){
-                String first = msg.getData().getString("first");
-                String second = msg.getData().getString("second");
-                String third = msg.getData().getString("third");
-                String fourth = msg.getData().getString("fourth");
-                String han = msg.getData().getString("han");
-                if(first != null){
-                    han_count[0]++;
-                }
-                if(second != null){
-                    han_count[0]++;
-                }
-                if(third != null){
-                    han_count[0]++;
-                }
-                if(fourth != null){
-                    han_count[0]++;
-                }
-                if(han_count[0] == 4){
-
-                    mandarin_handler.postDelayed(mandarin_runnable, 1500);
-
-                }
-            }
-        };
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GetFirstData getFirstData = new GetFirstData(MessageActivity.this);
-                getFirstData.execute("http://168.188.126.175/dodam/get_first_data.php", id);
-                while(true){
-                    if(getFirstData.te != null){
-
-                        first_preference = getFirstData.getData();
-                        happyness = Integer.parseInt(first_preference[0]);
-                        sadness = Integer.parseInt(first_preference[1]);
-                        annoyed = Integer.parseInt(first_preference[2]);
-                        depressed = Integer.parseInt(first_preference[3]);
-
-                        Message message = handler.obtainMessage();
-                        Bundle data = new Bundle();
-                        data.putString("first","first");
-                        message.setData(data);
-                        handler.sendMessage(message);
-                        break;
-                    }
-                }
-
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GetSecondData getSecondData = new GetSecondData(MessageActivity.this);
-                getSecondData.execute("http://168.188.126.175/dodam/get_second_data.php", id);
-                while(true){
-                    if(getSecondData.te != null){
-                        second_preference = getSecondData.getData();
-                        Message message = handler.obtainMessage();
-                        Bundle data = new Bundle();
-                        data.putString("second","second");
-                        message.setData(data);
-                        handler.sendMessage(message);
-                        break;
-                    }
-                }
-
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GetThridData getThridData = new GetThridData(MessageActivity.this);
-                getThridData.execute("http://168.188.126.175/dodam/get_third_data.php", id);
-                while(true){
-                    if(getThridData.te != null){
-                        third_preference = getThridData.getData();
-                        Message message = handler.obtainMessage();
-                        Bundle data = new Bundle();
-                        data.putString("third","third");
-                        message.setData(data);
-                        handler.sendMessage(message);
-                        break;
-                    }
-                }
-
-            }
-        }).start();
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                GetFourthData getFourthData = new GetFourthData(MessageActivity.this);
-                getFourthData.execute("http://168.188.126.175/dodam/get_fourth_data.php", id);
-                while(true){
-                    if(getFourthData.te != null){
-                        fourth_preference = getFourthData.getData();
-                        Message message = handler.obtainMessage();
-                        Bundle data = new Bundle();
-                        data.putString("fourth","fourth");
-                        message.setData(data);
-                        handler.sendMessage(message);
-                        break;
-                    }
-                }
-
-            }
-        }).start();
-
-
-
         third_layout = findViewById(R.id.third_layout);
-
         picker_save = findViewById(R.id.picker_save);
         picker_save.setOnClickListener(new View.OnClickListener(){
-
             @Override
             public void onClick(View view) {
                 picker.setVisibility(View.INVISIBLE);
@@ -388,16 +279,8 @@ public class MessageActivity extends AppCompatActivity {
                     recyclerView.scrollToPosition(adapter.getItemCount()-1);
                 }
                 if(count == 19){ // 노래
-                    GetMusicData getMusicData = new GetMusicData(MessageActivity.this);
-                    getMusicData.execute("http://168.188.126.175/dodam/get_music_data.php", emotion_result);
-                    while(true){
-                        if(getMusicData.te != null){
-                            music = getMusicData.getData();
-                            break;
-                        }
-                    }
                     int ran = (int)(Math.random()*10);
-                    ChatMessage chatMessage = new ChatMessage(side, music[ran]);
+                    ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier((emotion_result+"_music" + ran), "string", getPackageName())));
                     adapter.addItem(chatMessage);
                     button.setVisibility(View.INVISIBLE);
                     recyclerView.setAdapter(adapter);
@@ -447,16 +330,8 @@ public class MessageActivity extends AppCompatActivity {
 
                 }
                 if(count == 19){ //명언
-                    GetMessageData getMessageData = new GetMessageData(MessageActivity.this);
-                    getMessageData.execute("http://168.188.126.175/dodam/get_message_data.php", emotion_result);
-                    while(true){
-                        if(getMessageData.te != null){
-                            message = getMessageData.getData();
-                            break;
-                        }
-                    }
                     int ran = (int)(Math.random()*10);
-                    ChatMessage chatMessage = new ChatMessage(side, message[ran]);
+                    ChatMessage chatMessage = new ChatMessage(side, getString(getResources().getIdentifier((emotion_result+"_fs" + ran), "string", getPackageName())));
                     adapter.addItem(chatMessage);
                     button.setVisibility(View.INVISIBLE);
                     recyclerView.setAdapter(adapter);
@@ -826,439 +701,24 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView.scrollToPosition(adapter.getItemCount()-1);
         //message.arg1 = 0;
     }
+
     @Override
     protected void onDestroy() {
         Log.i("test", "onDstory()");
+        //handler.remove;
         mandarin_handler.removeCallbacks(mandarin_runnable);
+        //System.gc();
+        adapter = null;
+        handler = null;
+        mandarin_handler = null;
+        mandarin_runnable = null;
+        recyclerView = null;
         super.onDestroy();
     }
 
 }
 
-class GetFirstData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String id = null;
-    Boolean re = false;
 
-    public GetFirstData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        id = params[1];
-        String param = "ID=" + id+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("first_preference", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
-
-class GetSecondData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String id = null;
-    Boolean re = false;
-
-    public GetSecondData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        id = params[1];
-        String param = "ID=" + id+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("first_preference", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
-
-class GetThridData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String id = null;
-    Boolean re = false;
-
-    public GetThridData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        id = params[1];
-        String param = "ID=" + id+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("first_preference", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
-
-class GetFourthData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String id = null;
-    Boolean re = false;
-
-    public GetFourthData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        id = params[1];
-        String param = "ID=" + id+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("first_preference", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
-
-class GetMessageData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String category = null;
-    Boolean re = false;
-
-    public GetMessageData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        category = params[1];
-        String param = "FS_category=" + category+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("message", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
-class GetMusicData extends AsyncTask<String, Void, String> {
-    private Context context;
-    String te[] = null;
-    String category = null;
-    Boolean re = false;
-
-    public GetMusicData(Context con){
-        this.context = con;
-    }
-    @Override
-    protected String doInBackground(String... params) {
-        category = params[1];
-        String param = "MUSIC_category=" + category+"";
-        String uri = params[0];
-        try{
-            URL url = new URL(uri);
-            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
-            conn.setRequestMethod("POST");
-            conn.connect();
-/* 안드로이드 -> 서버 파라메터값 전달 */
-            OutputStream outs = conn.getOutputStream();
-            outs.write(param.getBytes("UTF-8"));
-            outs.flush();
-            outs.close();
-
-/* 서버 -> 안드로이드 파라메터값 전달 */
-            int responseStatusCode = conn.getResponseCode();
-            InputStream inputStream;
-            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
-                inputStream = conn.getInputStream();
-            }
-            else{
-                inputStream = conn.getErrorStream();
-            }
-
-
-            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            while((line = bufferedReader.readLine()) != null){
-                sb.append(line);
-            }
-
-
-            bufferedReader.close();
-
-
-            te = sb.toString().split(",");
-            Log.e("music", sb.toString());
-            return sb.toString();
-
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-
-
-    }
-
-    public String[] getData(){
-        return this.te;
-    }
-
-}
 class SetTotalData extends AsyncTask<String, Void, String> {
     private Context context;
     String te[] = null;

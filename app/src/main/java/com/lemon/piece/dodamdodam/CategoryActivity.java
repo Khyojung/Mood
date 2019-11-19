@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.lemon.piece.dodamdodam.category.GraphActivity;
-import com.lemon.piece.dodamdodam.category.chat.MessageActivity;
 import com.lemon.piece.dodamdodam.category.diary.DiaryActivity;
 
 public class CategoryActivity extends AppCompatActivity implements View.OnClickListener{
@@ -80,8 +79,7 @@ public class CategoryActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = null;
         switch (view.getId()){
             case R.id.message:
-                intent = new Intent(this, MessageActivity.class);
-
+                intent = new Intent(this, MiddleActivity.class);
                 break;
             case R.id.graph:
                 intent = new Intent(this, GraphActivity.class);
