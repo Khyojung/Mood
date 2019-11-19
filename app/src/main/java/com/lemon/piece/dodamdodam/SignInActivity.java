@@ -4,6 +4,7 @@ package com.lemon.piece.dodamdodam;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -43,14 +44,11 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 id = ((EditText)findViewById(R.id.check_id)).getText().toString();
                 pw = ((EditText)findViewById(R.id.check_pw)).getText().toString();
+
+
+
                 GetDataJSON getDataJSON = new GetDataJSON(SignInActivity.this);
                 getDataJSON.execute("http://168.188.126.175/dodam/login.php", id, pw);
-                try {
-                    Thread.sleep(4000);
-                    //finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         });
         Button singUp = findViewById(R.id.SignUp);
@@ -67,6 +65,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
     private Context context;
     String te[] = null;
     String id = null;
+    String pw = null;
     Boolean re = false;
 
     public GetDataJSON(Context con){
@@ -75,7 +74,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         id = params[1];
-        String pw = params[2];
+        pw = params[2];
         String param = "u_id=" + id+  "&u_pw="+pw+"";
         String uri = params[0];
         try{
@@ -137,7 +136,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
         if (te[0].equals("success")) {
             Log.e("RESULT", "성공적으로 처리되었습니다!");
             GetID getID = new GetID(context);
-            getID.execute("http://168.188.126.175/dodam/check_db_id.php", id, te[1]);
+            getID.execute("http://168.188.126.175/dodam/check_db_id.php", id, te[1], pw);
 
 
         } else if (te[0].equals("error")) {
@@ -158,6 +157,7 @@ class GetID extends AsyncTask<String, Void, String> {
     String te = null;
     String db = null;
     String id = null;
+    String pw = null;
     String name = null;
 
     public GetID(Context con){
@@ -167,6 +167,7 @@ class GetID extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
         id = params[1];
         name = params[2];
+        pw = params[3];
         String param = "u_id=" + id+ "&u_name="+name+"";
         String uri = params[0];
         try{
@@ -228,11 +229,17 @@ class GetID extends AsyncTask<String, Void, String> {
             Toast.makeText(context, "설문조사가 필요하다냥!", Toast.LENGTH_LONG);
             Intent intent = new Intent(context, Survey.class);
             intent.putExtra("id",id);
-            intent.putExtra("id",name);
+            intent.putExtra("name",name);
             context.startActivity(intent);
             ((Activity)context).finish();
         }else{
 
+            SharedPreferences auto = context.getSharedPreferences("auto", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor autoLogin = auto.edit();
+            autoLogin.putString("inputId", id);
+            autoLogin.putString("inputPwd", pw);
+            autoLogin.putString("inputName",name);
+            autoLogin.commit();
             Intent intent = new Intent(context, CategoryActivity.class);
             intent.putExtra("id", id);
             intent.putExtra("name",name);

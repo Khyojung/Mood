@@ -11,6 +11,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="제목"
+        android:paddingLeft="10dp"
         android:id="@+id/diary_title"
         android:fontFamily="@font/font"
         />
@@ -23,6 +24,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="날짜"
+        android:paddingLeft="10dp"
         android:id="@+id/diary_day"
         android:fontFamily="@font/font"
         />

@@ -153,9 +153,12 @@ class GetDiaryData extends AsyncTask<String, Void, String> {
             bufferedReader.close();
 
             //te = new String[2][];
-            test = sb.toString().split(" ");
-            te1 = test[0].split(",");
-            te2 = test[1].split(",");
+            test = sb.toString().split("`");
+            if(test.length != 0){
+                te1 = test[0].split(",");
+                te2 = test[1].split(",");
+            }
+
             Log.e("asdf", sb.toString());
             return sb.toString();
 

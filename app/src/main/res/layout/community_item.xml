@@ -8,9 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <TextView
+            android:fontFamily="@font/font"
             android:textColor="@color/white"
             android:gravity="center"
             android:text="text"
+            android:textSize="25dp"
             android:id="@+id/community_text"
             android:layout_width="300dp"
             android:layout_height="300dp" />

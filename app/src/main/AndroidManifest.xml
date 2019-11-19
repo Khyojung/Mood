@@ -22,11 +22,7 @@
         <activity android:name=".CategoryActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".category.GraphActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".category.CommunityActivity" />
         <activity android:name=".category.diary.DiaryActivity">
@@ -35,7 +31,11 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".NavigationActivity"
@@ -44,6 +44,7 @@
         <activity android:name=".WriteCommunityActivity"></activity>
         <activity android:name=".category.diary.WriteDiaryActivity"></activity>
         <activity android:name=".default_user.Survey">
+
 
         </activity>
     </application>

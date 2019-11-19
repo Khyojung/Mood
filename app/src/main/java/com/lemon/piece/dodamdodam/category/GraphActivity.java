@@ -36,6 +36,9 @@ public class GraphActivity extends AppCompatActivity {
     ImageView cup1, cup2, cup3, cup4, cup5, cup6, cup7;
     String[] mon, tue, wed, thi, fri, sat, sun;
     String day;
+    Thread thread;
+    Message message;
+    GetStatisticsData getStatisticsData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +54,14 @@ public class GraphActivity extends AppCompatActivity {
             @Override
             public void handleMessage(Message msg){
                 if(msg.arg1 == 1000){
-                    setMondayCups();
-                    setTuedayCups();
-                    setWeddayCups();
-                    setThidayCups();
-                    setFridayCups();
-                    setSatdayCups();
-                    setSundayCups();
+                    setMondayCups(mon[0],mon[1]);
+                    setTuedayCups(tue[0], tue[1]);
+                    setWeddayCups(wed[0], wed[1]);
+                    setThidayCups(thi[0], thi[1]);
+                    setFridayCups(fri[0], fri[1]);
+                    setSatdayCups(sat[0], sat[1]);
+                    setSundayCups(sun[0], sun[1]);
+                    message.arg1 = 10;
                 }
 
             }
@@ -65,26 +69,25 @@ public class GraphActivity extends AppCompatActivity {
 
 
         };
-        new Thread(new Runnable() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void run() {
-                GetStatisticsData getStatisticsData = new GetStatisticsData(GraphActivity.this);
-                getStatisticsData.execute("http://168.188.126.175/dodam/get_statistics_data.php", id);
-                while(true){
-                    if(getStatisticsData.te !=null){
-                        statistics = getStatisticsData.te;
-                        day = getDay();
-                        setDays(statistics);
-                        Message message = handler.obtainMessage();
-                        message.arg1 = 1000;
-                        handler.sendMessage(message);
-                        break;
-                    }
-
-                }
+        getStatisticsData = new GetStatisticsData(GraphActivity.this);
+        getStatisticsData.te = null;
+        getStatisticsData.execute("http://168.188.126.175/dodam/get_statistics_data.php", id);
+        while(true){
+            Log.e("123","안됩니다");
+            if(getStatisticsData.te !=null){
+                statistics = getStatisticsData.te;
+                day = getDay();
+                setDays(statistics);
+                message = handler.obtainMessage();
+                message.arg1 = 1000;
+                handler.sendMessage(message);
+                break;
             }
-        }).start();
+
+        }
+
+
+
 
         cup1 = findViewById(R.id.cup_day_1);
         cup2 = findViewById(R.id.cup_day_2);
@@ -110,6 +113,15 @@ public class GraphActivity extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public void onBackPressed() {
+        if (getStatisticsData.getStatus() == AsyncTask.Status.RUNNING)
+        {
+            getStatisticsData.cancel(true);
+        }
+        finish();
+    }
+
     public String getDay(){
         Calendar cal = Calendar.getInstance();
         String strWeek = null;
@@ -177,10 +189,10 @@ public class GraphActivity extends AppCompatActivity {
 
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setMondayCups(){
+    public void setMondayCups(String f, String s){
         if(mon != null){
-            String feel = mon[0];
-            int size = Integer.parseInt(mon[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -224,10 +236,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setTuedayCups(){
+    public void setTuedayCups(String f, String s){
         if(tue != null){
-            String feel = tue[0];
-            int size = Integer.parseInt(tue[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -271,10 +283,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setWeddayCups(){
+    public void setWeddayCups(String f, String s){
         if(wed != null){
-            String feel = wed[0];
-            int size = Integer.parseInt(wed[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -318,10 +330,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setThidayCups(){
+    public void setThidayCups(String f, String s){
         if(thi != null){
-            String feel = thi[0];
-            int size = Integer.parseInt(thi[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -365,10 +377,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setFridayCups(){
+    public void setFridayCups(String f, String s){
         if(fri != null){
-            String feel = fri[0];
-            int size = Integer.parseInt(fri[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -412,10 +424,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setSatdayCups(){
+    public void setSatdayCups(String f, String s){
         if(sat != null){
-            String feel = sat[0];
-            int size = Integer.parseInt(sat[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
@@ -459,10 +471,10 @@ public class GraphActivity extends AppCompatActivity {
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public void setSundayCups(){
+    public void setSundayCups(String f, String s){
         if(sun != null){
-            String feel = sun[0];
-            int size = Integer.parseInt(sun[1]);
+            String feel = f;
+            int size = Integer.parseInt(s);
             switch (feel){
                 case "happyness":
                     if (size >= 9) {
