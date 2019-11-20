@@ -1,8 +1,10 @@
 package com.lemon.piece.dodamdodam;
 
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.lemon.piece.dodamdodam.default_user.Survey;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,14 +44,11 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View view) {
                 id = ((EditText)findViewById(R.id.check_id)).getText().toString();
                 pw = ((EditText)findViewById(R.id.check_pw)).getText().toString();
+
+
+
                 GetDataJSON getDataJSON = new GetDataJSON(SignInActivity.this);
                 getDataJSON.execute("http://168.188.126.175/dodam/login.php", id, pw);
-                try {
-                    Thread.sleep(4000);
-                    //finish();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
             }
         });
         Button singUp = findViewById(R.id.SignUp);
@@ -64,6 +65,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
     private Context context;
     String te[] = null;
     String id = null;
+    String pw = null;
     Boolean re = false;
 
     public GetDataJSON(Context con){
@@ -72,7 +74,7 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
     @Override
     protected String doInBackground(String... params) {
         id = params[1];
-        String pw = params[2];
+        pw = params[2];
         String param = "u_id=" + id+  "&u_pw="+pw+"";
         String uri = params[0];
         try{
@@ -133,12 +135,11 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
 
         if (te[0].equals("success")) {
             Log.e("RESULT", "성공적으로 처리되었습니다!");
-            Intent intent = new Intent(context, CategoryActivity.class);
-            intent.putExtra("id", id);
-            intent.putExtra("name",te[1]);
-            context.startActivity(intent);
+            GetID getID = new GetID(context);
+            getID.execute("http://168.188.126.175/dodam/check_db_id.php", id, te[1], pw);
 
-        } else if (te.equals("error")) {
+
+        } else if (te[0].equals("error")) {
             Log.e("RESULT", "비밀번호가 일치하지 않습니다.");
             Toast.makeText(context, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
 
@@ -149,6 +150,104 @@ class GetDataJSON extends AsyncTask<String, Void, String> {
         return re;
     }
 
+
+}
+class GetID extends AsyncTask<String, Void, String> {
+    private Context context;
+    String te = null;
+    String db = null;
+    String id = null;
+    String pw = null;
+    String name = null;
+
+    public GetID(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        name = params[2];
+        pw = params[3];
+        String param = "u_id=" + id+ "&u_name="+name+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            db = sb.toString();
+            Log.e("temp", db);
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+    @Override
+    protected void onPostExecute(String aVoid) {
+        super.onPostExecute(aVoid);
+
+        if(db.equals("error")){ //db안에 아이디가 없을 경우
+
+            Toast.makeText(context, "설문조사가 필요하다냥!", Toast.LENGTH_LONG);
+            Intent intent = new Intent(context, Survey.class);
+            intent.putExtra("id",id);
+            intent.putExtra("name",name);
+            context.startActivity(intent);
+            ((Activity)context).finish();
+        }else{
+
+            SharedPreferences auto = context.getSharedPreferences("auto", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor autoLogin = auto.edit();
+            autoLogin.putString("inputId", id);
+            autoLogin.putString("inputPwd", pw);
+            autoLogin.putString("inputName",name);
+            autoLogin.commit();
+            Intent intent = new Intent(context, CategoryActivity.class);
+            intent.putExtra("id", id);
+            intent.putExtra("name",name);
+            context.startActivity(intent);
+            ((Activity)context).finish();
+        }
+
+    }
 
 }
 

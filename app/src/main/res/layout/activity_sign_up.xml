@@ -29,6 +29,8 @@
                 android:layout_height="20dp" />
 
             <EditText
+                android:maxLength="16"
+                android:maxLines="1"
                 android:id="@+id/edit_id"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content" />
@@ -39,6 +41,8 @@
             android:layout_height="20dp" />
 
             <EditText
+                android:maxLength="16"
+                android:maxLines="1"
                 android:id="@+id/edit_name"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content" />
@@ -48,6 +52,8 @@
             android:layout_height="20dp" />
 
             <EditText
+                android:maxLength="16"
+                android:maxLines="1"
                 android:password="true"
                 android:id="@+id/edit_pw"
                 android:layout_width="120dp"
@@ -59,6 +65,8 @@
             android:layout_height="20dp" />
 
             <EditText
+                android:maxLength="16"
+                android:maxLines="1"
                 android:password="true"
                 android:id="@+id/edit_pw_again"
                 android:layout_width="120dp"

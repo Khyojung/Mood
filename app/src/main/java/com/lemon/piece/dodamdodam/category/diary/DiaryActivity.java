@@ -37,8 +37,8 @@ public class DiaryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary);
         Intent intent = getIntent();
-        id = "918fall";//intent.getExtras().getString("id");
-        name = "khj";//intent.getExtras().getString("name");
+        id = intent.getExtras().getString("id");
+        name = intent.getExtras().getString("name");
 
         handler = new Handler(){
             @Override
@@ -47,6 +47,8 @@ public class DiaryActivity extends AppCompatActivity {
                     RecyclerView recyclerView = findViewById(R.id.recyclerView);
 
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DiaryActivity.this);
+                    linearLayoutManager.setReverseLayout(true);
+                    linearLayoutManager.setStackFromEnd(true);
                     recyclerView.setLayoutManager(linearLayoutManager);
 
                     adapter = new DiaryAdapter();
@@ -151,9 +153,12 @@ class GetDiaryData extends AsyncTask<String, Void, String> {
             bufferedReader.close();
 
             //te = new String[2][];
-            test = sb.toString().split(" ");
-            te1 = test[0].split(",");
-            te2 = test[1].split(",");
+            test = sb.toString().split("`");
+            if(test.length != 0){
+                te1 = test[0].split(",");
+                te2 = test[1].split(",");
+            }
+
             Log.e("asdf", sb.toString());
             return sb.toString();
 

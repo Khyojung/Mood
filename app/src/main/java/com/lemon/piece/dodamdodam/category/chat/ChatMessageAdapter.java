@@ -17,12 +17,13 @@ import java.util.ArrayList;
 
 public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    String[] text_set = {"m","m","u","m","u","m","m","u","m","u","m","m","u","m","m","u","m","m","u"};
+    String[] text_set = {"m","b","u","m","u","m","b","b","u","m","u","m","b","u","m","b","u","m","b","b","u","m","u","m","b","b","m","b","b","m","b","b"};
 
     // adapter에 들어갈 list 입니다.
     private ArrayList<ChatMessage> listData = new ArrayList<>();
     private TextView textView2;
     private TextView textView1;
+    private TextView textView3;
 
     boolean test;
     public void setTest(boolean b){
@@ -42,6 +43,9 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case 1:
                 View me_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatting_message, parent, false);
                 return new MeViewHolder(me_view);
+            case 2:
+                View mandarin_visible_view = LayoutInflater.from(parent.getContext()).inflate(R.layout.chatting_mandarin_visible, parent, false);
+                return new MandarinVisibleViewHolder(mandarin_visible_view);
         }
         return null;
 
@@ -53,6 +57,8 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         int returnVal = 0;
         if(text_set[position].equals("u")){
             returnVal = 1;
+        }else if(text_set[position].equals("b")){
+            returnVal = 2;
         }
         return returnVal;
         //return position % 2;
@@ -67,6 +73,10 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             case 1:
 
                 textView2.setText(listData.get(position).getMessage());
+                break;
+            case 2:
+
+                textView3.setText(listData.get(position).getMessage());
                 break;
         }
 
@@ -106,6 +116,20 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             super(itemView);
 
             textView2 = itemView.findViewById(R.id.chat_me);
+        }
+
+        void onBind(ChatMessage data) {
+            textView2.setText(data.getMessage());
+        }
+    }
+    class MandarinVisibleViewHolder extends RecyclerView.ViewHolder {
+
+
+
+        MandarinVisibleViewHolder(View itemView) {
+            super(itemView);
+
+            textView3 = itemView.findViewById(R.id.chat_mandarin_visible);
         }
 
         void onBind(ChatMessage data) {

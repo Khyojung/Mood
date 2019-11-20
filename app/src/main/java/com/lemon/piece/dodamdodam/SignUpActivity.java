@@ -1,8 +1,12 @@
 package com.lemon.piece.dodamdodam;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,10 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -23,6 +29,9 @@ public class SignUpActivity extends AppCompatActivity {
     EditText pw;
     EditText name;
     EditText again;
+    String _id, _pw, _name , _pw_again;
+    String check;
+    Message message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,30 +40,67 @@ public class SignUpActivity extends AppCompatActivity {
         pw = (EditText) findViewById(R.id.edit_pw);
         name = (EditText) findViewById(R.id.edit_name);
         again = findViewById(R.id.edit_pw_again);
+        @SuppressLint("HandlerLeak") final Handler handler = new Handler(){
 
+            @Override
+            public void handleMessage(Message msa){
+                if(msa.arg1 == 1000){
+                    if(_id.equals("")||_pw.equals("") || _name.equals("")||_pw_again.equals("")){
+                        Toast.makeText(SignUpActivity.this, "빈칸을 채워주세요", Toast.LENGTH_SHORT).show();
+                    }else{
+                        if(!check.equals("success")){
+                            Toast.makeText(SignUpActivity.this, "존재하는 ID입니다.", Toast.LENGTH_SHORT).show();
+                        }else{
+                            if(!_pw.equals(_pw_again)){
+                                Toast.makeText(SignUpActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_SHORT).show();
+                            }else{
+                                InsertData task = new InsertData(SignUpActivity.this);
+                                task.execute("http://168.188.126.175/dodam/insert.php", _id, _pw, _name);
+                            }
+
+                        }
+                    }
+                }
+                message.arg1 = 10;
+
+
+            }
+        };
         Button button = (Button)findViewById(R.id.edit_button);
         button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                String _id = id.getText().toString();
-                String _pw = pw.getText().toString();
-                String _name = name.getText().toString();
-                String _pw_again = again.getText().toString();
+                _id = id.getText().toString();
+                _pw = pw.getText().toString();
+                _name = name.getText().toString();
+                _pw_again = again.getText().toString();
 
-                if(_pw.equals(_pw_again)){
-                    try{
-                        InsertData task = new InsertData(SignUpActivity.this);
-                        task.execute("http://168.188.126.175/dodam/insert.php", _id, _pw, _name);
-                    }catch (Exception e){
-                        Log.d("error", String.valueOf(e));
-                    }finally {
-                        finish();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CheckIdData check_data = new CheckIdData(SignUpActivity.this);
+                        check_data.execute("http://168.188.126.175/dodam/check_id.php", _id);
+                        while(true){
+                            if(check_data.te != null){
+                                message = handler.obtainMessage();
+                                message.arg1 = 1000;
+                                check = check_data.getId();
+                                handler.sendMessage(message);
+                                break;
+                            }
+                        }
                     }
-                }else{
+                }).start();
 
-                    Toast.makeText(SignUpActivity.this, "비밀번호가 일치하지 않습니다", Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
+
+
+
 
 
 
@@ -136,5 +182,87 @@ class InsertData extends AsyncTask<String, Void, String>{
             return new String("Error: " + e.getMessage());
         }
 
+    }
+    @Override
+    protected void onPostExecute(String aVoid) {
+        super.onPostExecute(aVoid);
+
+        ((Activity)context).finish();
+
+
+
+    }
+}
+
+class CheckIdData extends AsyncTask<String, Void, String>{
+
+    private Context context;
+    String te = null;
+
+    String id;
+    public CheckIdData(Context con){
+        this.context = con;
+    }
+    @Override
+    protected String doInBackground(String... params) {
+        id = params[1];
+        String param = "u_id=" + id+"";
+        String uri = params[0];
+        try{
+            URL url = new URL(uri);
+            HttpURLConnection conn= (HttpURLConnection)url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.connect();
+/* 안드로이드 -> 서버 파라메터값 전달 */
+            OutputStream outs = conn.getOutputStream();
+            outs.write(param.getBytes("UTF-8"));
+            outs.flush();
+            outs.close();
+
+/* 서버 -> 안드로이드 파라메터값 전달 */
+            int responseStatusCode = conn.getResponseCode();
+            InputStream inputStream;
+            if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                inputStream = conn.getInputStream();
+            }
+            else{
+                inputStream = conn.getErrorStream();
+            }
+
+
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            StringBuilder sb = new StringBuilder();
+            String line = null;
+
+            while((line = bufferedReader.readLine()) != null){
+                sb.append(line);
+            }
+
+
+            bufferedReader.close();
+
+
+            te = sb.toString(); //if te가 success면 DB에 아이디가 존재하는 경우
+            Log.e("temp", te);
+            return sb.toString();
+
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+
+
+    }
+    public String getId(){
+        if(this.te.equals("1")){
+            return "error";
+        }else{
+            return "success";
+        }
     }
 }

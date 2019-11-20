@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
     <ImageView
+        android:layout_marginTop="5dp"
         android:background="@drawable/logo"
         android:layout_centerHorizontal="true"
         android:layout_width="194dp"
@@ -23,17 +24,19 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:fontFamily="@font/font"
         android:gravity="center"
         android:layout_gravity="center"
         android:id="@+id/message_day"
         android:text="날짜"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="40dp"
         android:layout_weight="1"
         android:layout_width="wrap_content"
         android:layout_height="0dp" />
+
     <android.support.v7.widget.RecyclerView
         android:paddingRight="30dp"
-        android:layout_weight="9"
+        android:layout_weight="10"
         android:divider="@android:color/white"
         android:dividerHeight="0dp"
         android:transcriptMode="alwaysScroll"
@@ -42,22 +45,53 @@
         android:layout_height="0dp">
     </android.support.v7.widget.RecyclerView>
     <FrameLayout
-        android:layout_margin="20dp"
-        android:layout_weight="1"
+
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_weight="2"
         android:layout_below="@id/chat_list"
         android:layout_width="match_parent"
         android:layout_height="0dp">
 
         <EditText
             android:visibility="invisible"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:background="#c6c6c6"
             android:id="@+id/chat_edit"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+        <LinearLayout
+            android:visibility="invisible"
+            android:orientation="horizontal"
+            android:id="@+id/picker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <NumberPicker
+                android:layout_margin="15dp"
+                android:layout_weight="9"
+                android:id="@+id/message_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+
+            </NumberPicker>
+            <Button
+                android:layout_gravity="center"
+                android:id="@+id/picker_save"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/cat_save"
+                android:layout_width="0dp"
+                android:layout_height="30dp" />
+        </LinearLayout>
+
         <LinearLayout
             android:visibility="invisible"
             android:id="@+id/button_layout"
@@ -66,18 +100,70 @@
             <Button
                 android:fontFamily="@font/font"
                 android:text="응"
-                android:layout_margin="8dp"
+
+                android:textSize="15dp"
                 android:background="@drawable/button_custom"
                 android:id="@+id/chat_yes"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:textSize="15dp"
+                android:fontFamily="@font/font"
+                android:text="아니"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_custom"
+                android:id="@+id/chat_no"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="invisible"
+            android:id="@+id/third_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:fontFamily="@font/font"
+                android:text="내가 가고 싶어서!"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/button_custom"
+                android:id="@+id/third_1"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
             <Button
                 android:fontFamily="@font/font"
-                android:text="아니"
-                android:layout_margin="8dp"
+                android:text="누가 불렀어!"
+
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
                 android:background="@drawable/button_custom"
-                android:id="@+id/chat_no"
+                android:id="@+id/third_2"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+            <Button
+                android:fontFamily="@font/font"
+                android:text="꼭 가야만 하는 자리였어!"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/button_custom"
+                android:id="@+id/third_3"
                 android:layout_weight="1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />

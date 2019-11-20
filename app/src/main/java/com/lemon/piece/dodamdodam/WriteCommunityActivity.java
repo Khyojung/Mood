@@ -67,7 +67,7 @@ public class WriteCommunityActivity extends AppCompatActivity {
                     text = editText.getText().toString();
                     try{
                         InsertWriteData task = new InsertWriteData(WriteCommunityActivity.this);
-                        task.execute("http://168.188.126.175/dodam/write_diary.php", id, name, select, "0", text, "0");
+                        task.execute("http://168.188.126.175/dodam/write_diary.php", id, name, select, "0", text);
                         Thread.sleep(1000);
                     }catch (Exception e){
                         e.printStackTrace();
@@ -97,10 +97,9 @@ class InsertWriteData extends AsyncTask<String, Void, String> {
         String category = (String)params[3];
         String num = (String)params[4];
         String message = (String)params[5];
-        String heart = (String)params[6];
 
         String serverURL = (String)params[0];
-        String postParameters = "ID=" + id + "&NAME=" + name+ "&CATEGORY=" + category+ "&MESSAGE_NUM=" + num+ "&MESSAGE=" + message+ "&HEART=" + heart+ "";
+        String postParameters = "ID=" + id + "&NAME=" + name+ "&CATEGORY=" + category+ "&MESSAGE_NUM=" + num+ "&MESSAGE=" + message+ "";
 
 
         try {

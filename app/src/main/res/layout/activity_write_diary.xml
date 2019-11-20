@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/diary_background"
+    android:background="@drawable/background_diary"
     tools:context="com.lemon.piece.dodamdodam.category.diary.WriteDiaryActivity">
 
     <LinearLayout
@@ -103,7 +103,7 @@
         </LinearLayout>
 
         <EditText
-            android:hint="제목"
+            android:hint="제목이다냥!"
             android:id="@+id/diary_name"
             android:fontFamily="@font/font"
             android:gravity="center"
@@ -130,7 +130,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:hint="내용을 써주세요"
+        android:hint="내용을 써달라냥!"
         android:id="@+id/diary_write"
         android:layout_width="match_parent"
         android:layout_height="387dp"
